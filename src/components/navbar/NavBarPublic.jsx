@@ -14,7 +14,7 @@ const NavBarPublic = () => {
       <Box display="block">
         <AppBar
           position="sticky"
-          style={{ background: "#E3D5F9", color: "#0E315A", boxShadow: "none", width: "100vw"}}
+          style={{ background: "#F6F1FF", color: "#0E315A", boxShadow: "none", width: "100vw"}}
         >
           <Container maxWidth="xl">
             <Toolbar disableGutters>
@@ -22,9 +22,9 @@ const NavBarPublic = () => {
               <Box
                 sx={{
                   flexGrow: 1,
-                  display: { xs: "none", sm: "flex" },
+                  display: "flex",
                   justifyContent: "center",
-                  marginLeft: { sm: "11%" },
+                  
                 }}
               >
                   <Button
@@ -60,7 +60,7 @@ const NavBarPublic = () => {
                   >
                     PASAJES DE LARGA DISTANCIA
                   </Button>
-                <Box style={{marginTop: 27}}>
+                <Box style={{marginTop: 27, marginLeft: 40}}>
                 <CartWidget />
                 </Box>
               </Box>
