@@ -26,3 +26,26 @@ a {
   color: inherit;
 }
 
+.toast-custom {
+  background-color: #c2deff;
+  color: #fff;
+  border-radius: 10px;
+}
+
+.toast-custom-body {
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+.promotionText {
+  background: linear-gradient(to right, #1a1f71, #252b84, #333a99, #3f4ab1, #4e58cc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 1rem;
+}
+
+.promotionSpan {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #4e58cc;
+}
