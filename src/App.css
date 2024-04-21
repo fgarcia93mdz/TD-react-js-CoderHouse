@@ -4,12 +4,12 @@ body {
   min-height: 100vh;
   margin: auto;
   font-family: 'Poppins', sans-serif;
-  background: '#0e315a';
+  background-color: #fcfbff;
 }
 
 .App {
   flex: 1 0 auto;
-  background: '#0e315a';
+  background: #0e315a;
 }
 
 .Footer {

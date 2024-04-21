@@ -5,7 +5,22 @@ import CardVisa from "./assets/img/cards/visa.png"
 import './App.css';
 
 import NavBarPublic from './components/navbar/NavBarPublic';
+import Footer from './components/footer/Footer';
 import ItemListContainer from './components/home/ItemListContainer';
+import ListPasajes from './components/ListContainer/ListPasajes';
+import { Routes, Route } from 'react-router-dom';
+
+// Data - Json 
+import interurbanoData from "./data/interurbanoData.json";
+import middleDistance from "./data/middleDistance.json";
+import longDistance from "./data/longDistance.json";
+
+import Box from '@mui/material/Box';
+
+import { DialogProvider } from './components/dialog/DialogContext';
+import Dialog from './components/dialog/Dialog';
+
+import { CartProvider } from './components/card/CartContext';
 
 const getMonthName = () => {
   const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
@@ -43,16 +58,44 @@ function App() {
   const author = `Realizado por ${name} ${lastName}`;
   const text = `¡Bienvenido al sistema de venta de pasajes de ${companyName}!`;
 
+  const provincia = "Mendoza";
+  const terminal = "Capital";
+
   return (
-    <React.Fragment>
-      <ToastContainer />
-      <div>
-        <NavBarPublic />
-      </div>
-      <div>
-        <ItemListContainer text={text} author={author} />
-      </div>
-    </React.Fragment>
+    <CartProvider>
+      <DialogProvider>
+        <React.Fragment>
+          <ToastContainer />
+          <Dialog />
+          <NavBarPublic />
+          <Box sx={{ marginBottom: "140px", minHeight: "50vh", maxHeight: "1000vh", maxWidth: "100vw" }}>
+            <Routes>
+              <Route
+                exact
+                path="/"
+                element={<ItemListContainer text={text} author={author} />}
+              />
+              <Route
+                exact
+                path="/category/interurbanos"
+                element={<ListPasajes data={interurbanoData} />}
+              />
+              <Route
+                exact
+                path="/category/media-distancia"
+                element={<ListPasajes data={middleDistance} />}
+              />
+              <Route
+                exact
+                path="/category/larga-distancia"
+                element={<ListPasajes data={longDistance} />}
+              />
+            </Routes>
+          </Box>
+          <Footer Terminal={terminal} Provincia={provincia} />
+        </React.Fragment>
+      </DialogProvider>
+    </CartProvider>
   )
 }
 
