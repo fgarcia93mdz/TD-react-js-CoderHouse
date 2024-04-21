@@ -9,6 +9,8 @@ import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import CreditCardIcon from '@material-ui/icons/CreditCard';
 import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet';
 import { CartContext } from '../card/CartContext';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const useStyles = makeStyles({
   dialog: {
@@ -118,19 +120,20 @@ function Dialog() {
   };
 
   const handleBuy = (item) => {
-  const currentCart = [...cart];
-  const cartItemIndex = currentCart.findIndex(i => i.id === item.id);
+    const currentCart = [...cart];
+    const cartItemIndex = currentCart.findIndex(i => i.id === item.id);
 
-  if (cartItemIndex !== -1) {
-    const newCartItem = { ...currentCart[cartItemIndex], quantity: currentCart[cartItemIndex].quantity + 1 };
-    currentCart[cartItemIndex] = newCartItem;
-  } else {
-    currentCart.push({ ...item, quantity: 1 });
-  }
+    if (cartItemIndex !== -1) {
+      const newCartItem = { ...currentCart[cartItemIndex], quantity: currentCart[cartItemIndex].quantity + 1 };
+      currentCart[cartItemIndex] = newCartItem;
+    } else {
+      currentCart.push({ ...item, quantity: 1 });
+    }
 
     setCart(currentCart);
+    toast.success(`Éxito en la compra del pasaje. Origen: ${item.origen}, Destino: ${item.destino} - ${item.fecha} - ${item.horaSalida} - ${item.horaLlegada} - ${item.precio} (Arg) - ${item.empresa} - ${item.plataforma} - Ala ${item.alaTerminal} - ${item.pasajesLibres} pasajes disponibles.`);
     navigate('/');
-};
+  };
 
   const handleAddToCart = () => {
     handleBuy(pasaje);
@@ -138,7 +141,8 @@ function Dialog() {
   };
 
   return (
-    <MuiDialog open={open} onClose={handleClose} fullScreen className={classes.dialog}>
+    <>
+      <MuiDialog open={open} onClose={handleClose} fullScreen className={classes.dialog}>
       {pasaje && (
         <>
           <DialogTitle className={classes.title}>Detalles del pasaje Nº {pasaje.id}</DialogTitle>
@@ -184,7 +188,10 @@ function Dialog() {
           </DialogActions>
         </>
       )}
-    </MuiDialog>
+      </MuiDialog>
+      <ToastContainer />
+    </>
+    
   );
 };
 
