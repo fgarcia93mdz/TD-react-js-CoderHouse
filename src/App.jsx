@@ -73,7 +73,7 @@ function App() {
               <Route
                 exact
                 path="/"
-                element={<ItemListContainer text={text} author={author} />}
+                element={<ItemListContainer greeting="¡Conociendo un poco más de Argentina!" />}
               />
               <Route
                 exact

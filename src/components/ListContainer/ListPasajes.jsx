@@ -80,7 +80,6 @@ const handleClick = (pasaje) => {
 };
 
   const classes = useStyles();
-  const location = useLocation();
 
   const handleSearchChange = (e) => {
     setSearch(e.target.value);
