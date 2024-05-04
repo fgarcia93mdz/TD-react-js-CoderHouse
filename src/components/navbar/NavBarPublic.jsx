@@ -6,6 +6,7 @@ import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import LogoItem from "./LogoItem";
 import CartWidget from "../card/CartWidget";
+import { Link } from 'react-router-dom';
 
 const NavBarPublic = () => {
 
@@ -14,19 +15,22 @@ const NavBarPublic = () => {
       <Box display="block">
         <AppBar
           position="sticky"
-          style={{ background: "#F6F1FF", color: "#0E315A", boxShadow: "none", width: "100vw"}}
+          style={{ background: "#F6F1FF", color: "#0E315A", boxShadow: "none", width: "100vw" }}
         >
           <Container maxWidth="xl">
             <Toolbar disableGutters>
-               <LogoItem />
+              <Link to="/">
+                <LogoItem />
+              </Link>
               <Box
                 sx={{
                   flexGrow: 1,
                   display: "flex",
                   justifyContent: "center",
-                  
+
                 }}
               >
+                <Link to="/category/interurbanos">
                   <Button
                     sx={{
                       my: 2,
@@ -38,6 +42,8 @@ const NavBarPublic = () => {
                   >
                     PASAJES INTERURBANOS
                   </Button>
+                </Link>
+                <Link to="/category/media-distancia">
                   <Button
                     sx={{
                       my: 2,
@@ -49,6 +55,8 @@ const NavBarPublic = () => {
                   >
                     PASAJES DE MEDIA DISTANCIA
                   </Button>
+                </Link>
+                <Link to="/category/larga-distancia">
                   <Button
                     sx={{
                       my: 2,
@@ -60,16 +68,16 @@ const NavBarPublic = () => {
                   >
                     PASAJES DE LARGA DISTANCIA
                   </Button>
-                <Box style={{marginTop: 27, marginLeft: 40}}>
-                <CartWidget />
+                </Link>
+                <Box style={{ marginTop: 27, marginLeft: 40 }}>
+                  <CartWidget />
                 </Box>
               </Box>
             </Toolbar>
           </Container>
         </AppBar>
       </Box>
-
-      </>
+    </>
   );
 };
 

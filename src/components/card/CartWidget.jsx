@@ -1,7 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import { CartContext } from './CartContext';
 
 const CartWidget = () => {
+  const { cart } = useContext(CartContext);
+
+  const itemCount = cart.reduce((total, item) => total + (Number.isFinite(item.quantity) ? item.quantity : 0), 0);
+  
   return (
     <div>
       <ShoppingCartIcon style={{
@@ -13,7 +18,7 @@ const CartWidget = () => {
       <span style={{
         position: "relative",
         top: "-25px",
-      }}>5</span>
+      }}>{itemCount}</span>
     </div>
   );
 };
