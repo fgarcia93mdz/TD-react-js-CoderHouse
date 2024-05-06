@@ -20,8 +20,6 @@ import Box from '@mui/material/Box';
 import { DialogProvider } from './components/dialog/DialogContext';
 import Dialog from './components/dialog/Dialog';
 
-import { CartProvider } from './components/card/CartContext';
-
 const getMonthName = () => {
   const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
     "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
@@ -52,17 +50,10 @@ function App() {
     );
   }, [month]);
 
-  const name = "Franco";
-  const lastName = "Garcia";
-  const companyName = "Terminal Digital";
-  const author = `Realizado por ${name} ${lastName}`;
-  const text = `¡Bienvenido al sistema de venta de pasajes de ${companyName}!`;
-
   const provincia = "Mendoza";
   const terminal = "Capital";
 
   return (
-    <CartProvider>
       <DialogProvider>
         <React.Fragment>
           <ToastContainer />
@@ -95,7 +86,6 @@ function App() {
           <Footer Terminal={terminal} Provincia={provincia} />
         </React.Fragment>
       </DialogProvider>
-    </CartProvider>
   )
 }
 

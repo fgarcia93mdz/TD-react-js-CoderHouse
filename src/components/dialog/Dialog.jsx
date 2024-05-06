@@ -8,7 +8,6 @@ import AirlineSeatReclineExtraIcon from '@mui/icons-material/AirlineSeatReclineE
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import CreditCardIcon from '@material-ui/icons/CreditCard';
 import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet';
-import { CartContext } from '../card/CartContext';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -112,33 +111,11 @@ function Dialog() {
   const classes = useStyles();
   const { open, pasaje, handleClose } = useContext(DialogContext);
 
-  const { cart, setCart, addToCart } = useContext(CartContext);
-
   const handleBack = () => {
     handleClose();
     navigate(-1);
   };
 
-  const handleBuy = (item) => {
-    const currentCart = [...cart];
-    const cartItemIndex = currentCart.findIndex(i => i.id === item.id);
-
-    if (cartItemIndex !== -1) {
-      const newCartItem = { ...currentCart[cartItemIndex], quantity: currentCart[cartItemIndex].quantity + 1 };
-      currentCart[cartItemIndex] = newCartItem;
-    } else {
-      currentCart.push({ ...item, quantity: 1 });
-    }
-
-    setCart(currentCart);
-    toast.success(`Éxito en la compra del pasaje. Origen: ${item.origen}, Destino: ${item.destino} - ${item.fecha} - ${item.horaSalida} - ${item.horaLlegada} - ${item.precio} (Arg) - ${item.empresa} - ${item.plataforma} - Ala ${item.alaTerminal} - ${item.pasajesLibres} pasajes disponibles.`);
-    navigate('/');
-  };
-
-  const handleAddToCart = () => {
-    handleBuy(pasaje);
-    handleClose();
-  };
 
   return (
     <>
@@ -182,7 +159,7 @@ function Dialog() {
             <Button onClick={handleBack} color="primary">
               Cerrar
             </Button>
-            <Button onClick={handleAddToCart} color="primary" autoFocus>
+            <Button color="primary" autoFocus>
               Comprar
             </Button>
           </DialogActions>
