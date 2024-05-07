@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Dialog as MuiDialog, DialogTitle, DialogContent, DialogActions, Button, makeStyles, Typography } from '@material-ui/core';
 import { DialogContext } from './DialogContext';
@@ -10,11 +10,13 @@ import CreditCardIcon from '@material-ui/icons/CreditCard';
 import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import AddIcon from '@material-ui/icons/Add';
+import RemoveIcon from '@material-ui/icons/Remove';
 
 const useStyles = makeStyles({
   dialog: {
     width: '50%',
-    height: '85%',
+    height: '90%',
     margin: 'auto',
   },
   title: {
@@ -96,7 +98,7 @@ const useStyles = makeStyles({
     backgroundColor: '#f5f5f5',
     padding: 10,
     borderRadius: 4,
-    boxShadow: '0 0 10px rgba(50,50,150,0.5)', 
+    boxShadow: '0 0 10px rgba(50,50,150,0.5)',
   },
   icon: {
     marginLeft: 10,
@@ -104,12 +106,36 @@ const useStyles = makeStyles({
     position: 'relative',
     top: '5px',
   },
+  counterHeader: {
+    marginTop: 20,
+    fontSize: '1.2rem',
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  counterContainer: {
+    display: 'flex',
+    justifyContent: 'left',
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  counterButton: {
+    color: '#3f51b5',
+    margin: '0 10px',
+  },
+  counterText: {
+    fontSize: '1rem',
+    color: '#3f51b5',
+    border: '1px solid #3f51b5',
+    borderRadius: 5,
+    padding: '5px 10px',
+  },
 });
 function Dialog() {
 
   const navigate = useNavigate();
   const classes = useStyles();
   const { open, pasaje, handleClose } = useContext(DialogContext);
+  const [pasajesSeleccionados, setPasajesSeleccionados] = useState(1);
 
   const handleBack = () => {
     handleClose();
@@ -120,55 +146,67 @@ function Dialog() {
   return (
     <>
       <MuiDialog open={open} onClose={handleClose} fullScreen className={classes.dialog}>
-      {pasaje && (
-        <>
-          <DialogTitle className={classes.title}>Detalles del pasaje Nº {pasaje.id}</DialogTitle>
-          <DialogContent className={classes.content}>
-            <Typography variant="h5" component="h2" className={classes.ruta}>
-              <ModeOfTravelIcon /> {pasaje.origen} <span className={classes.spanRuta}>(origen)</span>  <ArrowForwardIcon className={classes.ArrowForwardIcon} /> {pasaje.destino} <span className={classes.spanRuta}>(destino)</span>
-            </Typography>
-            <Typography color="textSecondary" className={classes.horario}>
-              Fecha de Partida: {new Date(pasaje.fecha).toLocaleDateString("es-ES")}
-            </Typography>
-            <Typography color="textSecondary" className={classes.horario}>
-              Horario de Salida: {pasaje.horaSalida} - Horario de Llegada: {pasaje.horaLlegada} <span className={classes.spanRuta}> ({pasaje.horasViaje} hs de viaje)</span>
-            </Typography>
-            <Typography color="textSecondary" className={classes.empresa}>
-              Empresa {pasaje.empresa} - {pasaje.plataforma} - Ala {pasaje.alaTerminal}
-            </Typography>
-            <Typography color="textSecondary" className={classes.precio}>
-              <AttachMoneyIcon className={classes.ArrowForwardIcon} /> {pasaje.precio} (Arg)
-            </Typography>
-            <Typography color="textSecondary" className={classes.mediosPago}>
-              Medios de pago
-              <span>
-                <AccountBalanceWalletIcon className={classes.icon} /> Efectivo
-              </span>
-              <span>
-                <CreditCardIcon className={classes.icon} /> Tarjeta de crédito
-              </span>
-              <span>
-                <CreditCardIcon className={classes.icon} /> Tarjeta de débito
-              </span>
-            </Typography>
-            <Typography color="textSecondary" className={classes.pasajesLibres}>
-              <AirlineSeatReclineExtraIcon className={classes.ArrowForwardIcon} /> {pasaje.pasajesLibres} pasajes disponibles
-            </Typography>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleBack} color="primary">
-              Cerrar
-            </Button>
-            <Button color="primary" autoFocus>
-              Comprar
-            </Button>
-          </DialogActions>
-        </>
-      )}
+        {pasaje && (
+          <>
+            <DialogTitle className={classes.title}>Detalles del pasaje Nº {pasaje.id}</DialogTitle>
+            <DialogContent className={classes.content}>
+              <Typography variant="h5" component="h2" className={classes.ruta}>
+                <ModeOfTravelIcon /> {pasaje.origen} <span className={classes.spanRuta}>(origen)</span>  <ArrowForwardIcon className={classes.ArrowForwardIcon} /> {pasaje.destino} <span className={classes.spanRuta}>(destino)</span>
+              </Typography>
+              <Typography color="textSecondary" className={classes.horario}>
+                Fecha de Partida: {new Date(pasaje.fecha).toLocaleDateString("es-ES")}
+              </Typography>
+              <Typography color="textSecondary" className={classes.horario}>
+                Horario de Salida: {pasaje.horaSalida} - Horario de Llegada: {pasaje.horaLlegada} <span className={classes.spanRuta}> ({pasaje.horasViaje} hs de viaje)</span>
+              </Typography>
+              <Typography color="textSecondary" className={classes.empresa}>
+                Empresa {pasaje.empresa} - {pasaje.plataforma} - Ala {pasaje.alaTerminal}
+              </Typography>
+              <Typography color="textSecondary" className={classes.precio}>
+                <AttachMoneyIcon className={classes.ArrowForwardIcon} /> {pasaje.precio} (Arg)
+              </Typography>
+              <Typography color="textSecondary" className={classes.mediosPago}>
+                Medios de pago
+                <span>
+                  <AccountBalanceWalletIcon className={classes.icon} /> Efectivo
+                </span>
+                <span>
+                  <CreditCardIcon className={classes.icon} /> Tarjeta de crédito
+                </span>
+                <span>
+                  <CreditCardIcon className={classes.icon} /> Tarjeta de débito
+                </span>
+              </Typography>
+              <Typography color="textSecondary" className={classes.pasajesLibres}>
+                <AirlineSeatReclineExtraIcon className={classes.ArrowForwardIcon} /> {pasaje.pasajesLibres} pasajes disponibles
+              </Typography>
+              <div className={classes.counterContainer}>
+                <Typography color="textSecondary" className={classes.counterHeader}>
+                  Seleccione la cantidad de pasajes:
+                </Typography>
+                <Button className={classes.counterButton} onClick={() => setPasajesSeleccionados(pasajesSeleccionados > 1 ? pasajesSeleccionados - 1 : 1)}>
+                  <RemoveIcon />
+                </Button>
+                <span className={classes.counterText}> {pasajesSeleccionados} </span>
+                <Button className={classes.counterButton} onClick={() => setPasajesSeleccionados(pasajesSeleccionados + 1)}>
+                  <AddIcon />
+                </Button>
+              </div>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleBack} color="primary">
+                Cerrar
+              </Button>
+              <Button color="primary" autoFocus>
+                Comprar
+              </Button>
+            </DialogActions>
+          </>
+        )}
       </MuiDialog>
       <ToastContainer />
     </>
-    
+
   );
 };
 
