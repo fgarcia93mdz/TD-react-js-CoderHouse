@@ -1,24 +1,24 @@
-// import React, { createContext, useState } from 'react';
+ import React, { createContext, useState } from 'react';
 
-// export const DialogContext = createContext();
+ export const DialogContext = createContext();
 
-// export const DialogProvider = ({ children }) => {
-//   const [open, setOpen] = useState(false);
-//   const [pasaje, setPasaje] = useState(null);
+ export const DialogProvider = ({ children }) => {
+   const [open, setOpen] = useState(false);
+   const [pasaje, setPasaje] = useState(null);
 
-//   const handleOpen = (pasajeData) => {
-//     setPasaje(pasajeData);
-//     setOpen(true);
-//   };
+   const handleOpen = (pasajeData) => {
+     setPasaje(pasajeData);
+     setOpen(true);
+   };
 
-//   const handleClose = () => {
-//     setOpen(false);
-//     setPasaje(null);
-//   };
+   const handleClose = () => {
+     setOpen(false);
+     setPasaje(null);
+   };
 
-//   return (
-//     <DialogContext.Provider value={{ open, pasaje, handleOpen, handleClose }}>
-//       {children}
-//     </DialogContext.Provider>
-//   );
-// };
+   return (
+     <DialogContext.Provider value={{ open, pasaje, handleOpen, handleClose }}>
+       {children}
+     </DialogContext.Provider>
+   );
+ };
