@@ -131,27 +131,7 @@ const CartPage = () => {
     }
   }, [user]);
 
-  const getProductStock = async (productId) => {
-    const docRef = doc(db, 'products', productId);
-    const docSnap = await getDoc(docRef);
-
-    if (docSnap.exists()) {
-      return docSnap.data().stock;
-    } else {
-      console.log('No such document!');
-      return 0;
-    }
-  };
-
   const handlePurchase = async () => {
-
-    for (let item of cart) {
-      const stock = await getProductStock(item.id);
-      if (stock < item.quantity) {
-        toast.error(`Lo siento, no hay suficiente stock para el viaje a: ${item.destino}`);
-        return;
-      }
-    }
 
     const order = {
       name: name,
