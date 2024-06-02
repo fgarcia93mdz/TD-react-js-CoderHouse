@@ -11,6 +11,7 @@ import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Link } from 'react-router-dom';
+import { CartContext } from '../card/CartContext';
 
 const useStyles = makeStyles({
   dialog: {

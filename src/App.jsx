@@ -13,7 +13,7 @@ import { Routes, Route } from 'react-router-dom';
 import { db } from '../src/firebase.js';
 import { collection, getDocs } from 'firebase/firestore';
 import { UserProvider } from './components/user/UserProvider.jsx';
-
+import { CartProvider } from './components/card/CartContext.jsx';
 
 import Box from '@mui/material/Box';
 
