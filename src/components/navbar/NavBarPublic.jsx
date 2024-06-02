@@ -70,7 +70,9 @@ const NavBarPublic = () => {
                   </Button>
                 </Link>
                 <Box style={{ marginTop: 27, marginLeft: 40 }}>
-                  <CartWidget />
+                  <Link to="/cart">
+                    <CartWidget />
+                  </Link>
                 </Box>
               </Box>
             </Toolbar>

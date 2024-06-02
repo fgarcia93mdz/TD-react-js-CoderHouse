@@ -1,19 +1,19 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import CardVisa from "./assets/img/cards/visa.png"
 import './App.css';
-
 import NavBarPublic from './components/navbar/NavBarPublic';
 import Footer from './components/footer/Footer';
 import ItemListContainer from './components/home/ItemListContainer';
 import ListPasajes from './components/ListContainer/ListPasajes';
+import CartPage from './components/card/CartPage.jsx';
+import Login from "../src/components/home/Login.jsx";
 import { Routes, Route } from 'react-router-dom';
+import { db } from '../src/firebase.js';
+import { collection, getDocs } from 'firebase/firestore';
+import { UserProvider } from './components/user/UserProvider.jsx';
 
-// Data - Json 
-import interurbanoData from "./data/interurbanoData.json";
-import middleDistance from "./data/middleDistance.json";
-import longDistance from "./data/longDistance.json";
 
 import Box from '@mui/material/Box';
 
@@ -31,6 +31,32 @@ const getMonthName = () => {
 }
 
 function App() {
+  const [interurbanoData, setInterurbanoData] = useState([]);
+  const [middleDistanceData, setMiddleDistanceData] = useState([]);
+  const [longDistanceData, setLongDistanceData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const interurbanoCollection = collection(db, 'dataInterUrbana');
+      const middleDistanceCollection = collection(db, 'dataMiddle');
+      const longDistanceCollection = collection(db, 'dataLong');
+
+      const interurbanoSnapshot = await getDocs(interurbanoCollection);
+      const middleDistanceSnapshot = await getDocs(middleDistanceCollection);
+      const longDistanceSnapshot = await getDocs(longDistanceCollection);
+
+      const interurbanoList = interurbanoSnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
+      const middleDistanceList = middleDistanceSnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
+      const longDistanceList = longDistanceSnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
+
+      setInterurbanoData(interurbanoList);
+      setMiddleDistanceData(middleDistanceList);
+      setLongDistanceData(longDistanceList);
+    };
+
+    fetchData();
+  }, []);
+
   const month = getMonthName();
 
   useEffect(() => {
@@ -62,40 +88,53 @@ function App() {
   const terminal = "Capital";
 
   return (
-    <CartProvider>
-      <DialogProvider>
-        <React.Fragment>
-          <ToastContainer />
-          <Dialog />
-          <NavBarPublic />
-          <Box sx={{ marginBottom: "140px", minHeight: "50vh", maxHeight: "1000vh", maxWidth: "100vw" }}>
-            <Routes>
-              <Route
-                exact
-                path="/"
-                element={<ItemListContainer greeting="¡Conociendo un poco más de Argentina!" />}
-              />
-              <Route
-                exact
-                path="/category/interurbanos"
-                element={<ListPasajes data={interurbanoData} />}
-              />
-              <Route
-                exact
-                path="/category/media-distancia"
-                element={<ListPasajes data={middleDistance} />}
-              />
-              <Route
-                exact
-                path="/category/larga-distancia"
-                element={<ListPasajes data={longDistance} />}
-              />
-            </Routes>
-          </Box>
-          <Footer Terminal={terminal} Provincia={provincia} />
-        </React.Fragment>
-      </DialogProvider>
-    </CartProvider>
+    <UserProvider>
+      <CartProvider>
+        <DialogProvider>
+          <React.Fragment>
+            <ToastContainer />
+            <Dialog />
+            <NavBarPublic />
+            <Box sx={{ marginBottom: "140px", minHeight: "50vh", maxHeight: "1000vh", maxWidth: "100vw" }}>
+              <Routes>
+                <Route
+                  exact
+                  path="/"
+                  element={<ItemListContainer greeting="¡Conociendo un poco más de Argentina!" />}
+                />
+                <Route
+                  exact
+                  path="/category/interurbanos"
+                  element={<ListPasajes data={interurbanoData} />}
+                />
+                <Route
+                  exact
+                  path="/category/media-distancia"
+                  element={<ListPasajes data={middleDistanceData} />}
+                />
+                <Route
+                  exact
+                  path="/category/larga-distancia"
+                  element={<ListPasajes data={longDistanceData} />}
+                />
+                <Route
+                  exact
+                  path="/cart"
+                  element={<CartPage />}
+                />
+                <Route
+                  exact
+                  path="/login"
+                  element={<Login />}
+                >
+                </Route>
+              </Routes>
+            </Box>
+            <Footer Terminal={terminal} Provincia={provincia} />
+          </React.Fragment>
+        </DialogProvider>
+      </CartProvider>
+    </UserProvider>
   )
 }
 

@@ -26,7 +26,7 @@
    };
 
    return (
-     <CartContext.Provider value={{ cart, setCart, addToCart, clearCart }}>
+     <CartContext.Provider value={{ cart, setCart, clearCart }}>
        {children}
      </CartContext.Provider>
    );

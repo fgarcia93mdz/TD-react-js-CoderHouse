@@ -4,13 +4,13 @@
  import { CartContext } from './CartContext';
 
  const CartWidget = () => {
-   const { cart, clearCart } = useContext(CartContext);
+   const { cart } = useContext(CartContext);
 
    const itemCount = cart.reduce((total, item) => total + (Number.isFinite(item.quantity) ? item.quantity : 0), 0);
   
    return (
      <div>
-       <Button onClick={clearCart} disableRipple>
+       <Button disableRipple>
          <ShoppingCartIcon style={{
            color: "#0E315A",
            fontSize: "30px",
