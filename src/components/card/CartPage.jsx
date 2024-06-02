@@ -11,6 +11,8 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { UserContext } from '../user/UserContext.jsx';
 import { onAuthStateChanged, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import { doc, getDoc } from 'firebase/firestore';
+
 
 const useStyles = makeStyles({
   root: {
@@ -113,7 +115,6 @@ const CartPage = () => {
   const navigate = useNavigate();
   const { cart, clearCart } = useContext(CartContext);
   const [name, setName] = useState('');
-  const [surname, setSurname] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
   const [confirmEmail, setConfirmEmail] = useState('');
@@ -121,7 +122,7 @@ const CartPage = () => {
   const [isMounted, setIsMounted] = useState(false);
 
   const totalPrice = cart.reduce((total, item) => total + item.precio * item.quantity, 0);
-const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+  const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
 
   useEffect(() => {
     if (user) {
@@ -130,7 +131,27 @@ const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
     }
   }, [user]);
 
+  const getProductStock = async (productId) => {
+    const docRef = doc(db, 'products', productId);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      return docSnap.data().stock;
+    } else {
+      console.log('No such document!');
+      return 0;
+    }
+  };
+
   const handlePurchase = async () => {
+
+    for (let item of cart) {
+      const stock = await getProductStock(item.id);
+      if (stock < item.quantity) {
+        toast.error(`Lo siento, no hay suficiente stock para el viaje a: ${item.destino}`);
+        return;
+      }
+    }
 
     const order = {
       name: name,
@@ -144,8 +165,11 @@ const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
     try {
       const docRef = await addDoc(collection(db, 'orders'), order);
       if (isMounted) {
-        toast.success(`Compra realizada con éxito! Tu ID de orden es: ${docRef.id}`);
+        toast.success(`Compra realizada con éxito! Tu ID de orden es: ${docRef.id}`, {
+          autoClose: false
+        });
         clearCart();
+        navigate(`/order/${docRef.id}`);
       }
     } catch (error) {
       console.error("Error adding document: ", error);
@@ -199,10 +223,9 @@ const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
   return (
     <div className={classes.container}>
       <Box mb={2}>
-
-      <Typography variant="h6">
-        Productos en el carrito: <span style={{ fontWeight: 'bold' }}>{totalItems}</span>
-      </Typography>
+        <Typography variant="h6">
+          Productos en el carrito: <span style={{ fontWeight: 'bold' }}>{totalItems}</span>
+        </Typography>
       </Box>
       <Grid container spacing={3}>
         {cart.map((item) => (

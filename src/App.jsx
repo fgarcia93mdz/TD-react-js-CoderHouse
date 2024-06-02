@@ -14,7 +14,7 @@ import { db } from '../src/firebase.js';
 import { collection, getDocs } from 'firebase/firestore';
 import { UserProvider } from './components/user/UserProvider.jsx';
 import { CartProvider } from './components/card/CartContext.jsx';
-
+import OrderPage from './components/order/OrderPage.jsx';
 
 import Box from '@mui/material/Box';
 
@@ -121,6 +121,10 @@ function App() {
                   element={<Login />}
                 >
                 </Route>
+                <Route
+                  exact
+                  path="/order/:id" 
+                  element={<OrderPage />} />
               </Routes>
             </Box>
             <Footer Terminal={terminal} Provincia={provincia} />

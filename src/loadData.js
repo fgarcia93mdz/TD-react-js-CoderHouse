@@ -1,6 +1,6 @@
 import { db } from '../src/firebase.js';
-import { collection, addDoc, doc, setDoc } from "firebase/firestore";
-import { uploadImage } from '../src/imageUpload.js'; 
+import { doc, setDoc } from "firebase/firestore";
+
 
 const dataInterUrbana = [
   {
