@@ -1,0 +1,628 @@
+import { db } from '../src/firebase.js';
+import { collection, addDoc, doc, setDoc } from "firebase/firestore";
+import { uploadImage } from '../src/imageUpload.js'; 
+
+const dataInterUrbana = [
+  {
+    "id": 1,
+    "origen": "Mendoza",
+    "destino": "San Rafael",
+    "precio": 20000,
+    "horaSalida": "08:00",
+    "horaLlegada": "09:30",
+    "fecha": "2022-12-01",
+    "empresa": "Flecha Bus",
+    "plataforma": "Plataforma 1",
+    "alaTerminal": "Oeste",
+    "pasajesLibres": 30,
+    "horasViaje": 1.5,
+    "servicio": "interurbanos", "imageUrl":  'https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/images%2Fflechabus_0244ed1d3c.jpg?alt=media&token=a8a969ee-17fa-483f-bdcf-c6e24853e0c0'
+  },
+  {
+    "id": 2,
+    "origen": "San Rafael",
+    "destino": "Mendoza",
+    "precio": 20000,
+    "horaSalida": "10:30",
+    "horaLlegada": "12:00",
+    "fecha": "2022-12-01",
+    "empresa": "Andesmar",
+    "plataforma": "Plataforma 2",
+    "alaTerminal": "Este",
+    "pasajesLibres": 25,
+    "horasViaje": 1.5,
+    "servicio": "interurbanos", "imageUrl":  'https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/images%2Fandesmar_373e914d64.jpg?alt=media&token=c3b96395-fa16-48cd-b2fd-309966307d2a'
+  },
+  {
+    "id": 3,
+    "origen": "Mendoza",
+    "destino": "Malargüe",
+    "precio": 25000,
+    "horaSalida": "13:00",
+    "horaLlegada": "16:00",
+    "fecha": "2022-12-01",
+    "empresa": "Andesmar",
+    "plataforma": "Plataforma 3",
+    "alaTerminal": "Sur",
+    "pasajesLibres": 20,
+    "horasViaje": 3,
+    "servicio": "interurbanos", "imageUrl":  'https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/images%2Fandesmar_373e914d64.jpg?alt=media&token=c3b96395-fa16-48cd-b2fd-309966307d2a'
+  },
+  {
+    "id": 4,
+    "origen": "Malargüe",
+    "destino": "Mendoza",
+    "precio": 25000,
+    "horaSalida": "17:00",
+    "horaLlegada": "20:00",
+    "fecha": "2022-12-01",
+    "empresa": "Iselin",
+    "plataforma": "Plataforma 4",
+    "alaTerminal": "Oeste",
+    "pasajesLibres": 15,
+    "horasViaje": 3,
+    "servicio": "interurbanos", "imageUrl":  'https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/images%2Fiselin.jpg?alt=media&token=aea39404-5073-43bb-9e0c-e975e75ca2b6'
+  },
+  {
+    "id": 5,
+    "origen": "Mendoza",
+    "destino": "San Martín",
+    "precio": 15000,
+    "horaSalida": "21:00",
+    "horaLlegada": "22:30",
+    "fecha": "2022-12-01",
+    "empresa": "Iselin",
+    "plataforma": "Plataforma 5",
+    "alaTerminal": "Este",
+    "pasajesLibres": 10,
+    "horasViaje": 1.5,
+    "servicio": "interurbanos", "imageUrl":  'https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/images%2Fiselin.jpg?alt=media&token=aea39404-5073-43bb-9e0c-e975e75ca2b6'
+  },
+  {
+    "id": 6,
+    "origen": "San Martín",
+    "destino": "Mendoza",
+    "precio": 15000,
+    "horaSalida": "23:00",
+    "horaLlegada": "00:30",
+    "fecha": "2022-12-02",
+    "empresa": "Iselin",
+    "plataforma": "Plataforma 6",
+    "alaTerminal": "Sur",
+    "pasajesLibres": 5,
+    "horasViaje": 1.5,
+    "servicio": "interurbanos", "imageUrl":  'https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/images%2Fiselin.jpg?alt=media&token=aea39404-5073-43bb-9e0c-e975e75ca2b6'
+  },
+  {
+    "id": 7,
+    "origen": "Mendoza",
+    "destino": "Tunuyán",
+    "precio": 30000,
+    "horaSalida": "08:00",
+    "horaLlegada": "10:00",
+    "fecha": "2022-12-01",
+    "empresa": "Fradaos",
+    "plataforma": "Plataforma 7",
+    "alaTerminal": "Oeste",
+    "pasajesLibres": 30,
+    "horasViaje": 2,
+    "servicio": "interurbanos", "imageUrl":  'https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/images%2Ffradaos_bcd8156f82.jpg?alt=media&token=7b933cc9-9aa1-47e4-9c7a-9b5097cc8f21'
+  },
+  {
+    "id": 8,
+    "origen": "Tunuyán",
+    "destino": "Mendoza",
+    "precio": 30000,
+    "horaSalida": "11:00",
+    "horaLlegada": "13:00",
+    "fecha": "2022-12-01",
+    "empresa": "Worldline",
+    "plataforma": "Plataforma 8",
+    "alaTerminal": "Este",
+    "pasajesLibres": 25,
+    "horasViaje": 2,
+    "servicio": "interurbanos", "imageUrl":  'https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/images%2Fworldline_4949710b21.jpg?alt=media&token=f46419e4-45c9-4f12-be1f-8471c0334658'
+  },
+  {
+    "id": 9,
+    "origen": "Mendoza",
+    "destino": "Uspallata",
+    "precio": 35000,
+    "horaSalida": "14:00",
+    "horaLlegada": "17:00",
+    "fecha": "2022-12-01",
+    "empresa": "Worldline",
+    "plataforma": "Plataforma 9",
+    "alaTerminal": "Sur",
+    "pasajesLibres": 20,
+    "horasViaje": 3,
+    "servicio": "interurbanos", "imageUrl":  'https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/images%2Fworldline_4949710b21.jpg?alt=media&token=f46419e4-45c9-4f12-be1f-8471c0334658'
+  },
+  {
+    "id": 10,
+    "origen": "Uspallata",
+    "destino": "Mendoza",
+    "precio": 35000,
+    "horaSalida": "18:00",
+    "horaLlegada": "21:00",
+    "fecha": "2022-12-01",
+    "empresa": "Worldline",
+    "plataforma": "Plataforma 10",
+    "alaTerminal": "Oeste",
+    "pasajesLibres": 15,
+    "horasViaje": 3,
+    "servicio": "interurbanos", "imageUrl":  'https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/images%2Fworldline_4949710b21.jpg?alt=media&token=f46419e4-45c9-4f12-be1f-8471c0334658'
+  },
+  {
+    "id": 11,
+    "origen": "Mendoza",
+    "destino": "Las Leñas",
+    "precio": 40000,
+    "horaSalida": "22:00",
+    "horaLlegada": "02:00",
+    "fecha": "2022-12-01",
+    "empresa": "Fradaos",
+    "plataforma": "Plataforma 11",
+    "alaTerminal": "Este",
+    "pasajesLibres": 10,
+    "horasViaje": 4,
+    "servicio": "interurbanos", "imageUrl":  'https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/images%2Ffradaos_bcd8156f82.jpg?alt=media&token=7b933cc9-9aa1-47e4-9c7a-9b5097cc8f21'
+  },
+  {
+    "id": 12,
+    "origen": "Las Leñas",
+    "destino": "Mendoza",
+    "precio": 40000,
+    "horaSalida": "03:00",
+    "horaLlegada": "07:00",
+    "fecha": "2022-12-02",
+    "empresa": "Fradaos",
+    "plataforma": "Plataforma 12",
+    "alaTerminal": "Sur",
+    "pasajesLibres": 5,
+    "horasViaje": 4,
+    "servicio": "interurbanos", "imageUrl":  'https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/images%2Ffradaos_bcd8156f82.jpg?alt=media&token=7b933cc9-9aa1-47e4-9c7a-9b5097cc8f21'
+  }
+];
+
+const dataLong = [
+  {
+    "id": 13,
+    "origen": "Madrid, España",
+    "destino": "París, Francia",
+    "precio": 100000,
+    "horaSalida": "08:00",
+    "horaLlegada": "20:00",
+    "fecha": "2022-12-01",
+    "empresa": "ChileBus",
+    "plataforma": "Plataforma 1",
+    "alaTerminal": "Oeste",
+    "pasajesLibres": 50,
+    "horasViaje": 12,
+    "servicio": "interurbanos", "imageUrl":  'https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/images%2Fchilebus_0a75cfe8bb.jpg?alt=media&token=c8ae211b-f233-4e2f-9979-d151b7a7873a' 
+  },
+  {
+    "id": 14,
+    "origen": "Barcelona, España",
+    "destino": "Roma, Italia",
+    "precio": 90000,
+    "horaSalida": "10:00",
+    "horaLlegada": "22:00",
+    "fecha": "2022-12-01",
+    "empresa": "Walcamau",
+    "plataforma": "Plataforma 2",
+    "alaTerminal": "Este",
+    "pasajesLibres": 45,
+    "horasViaje": 12,
+    "servicio": "interurbanos", "imageUrl":  'https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/images%2Fwalcamau_2c55ef4977.jpg?alt=media&token=4f987ca2-e08c-449d-84a2-d6fb078b6b37' 
+  },
+  {
+    "id": 15,
+    "origen": "Valencia, España",
+    "destino": "Lisboa, Portugal",
+    "precio": 70000,
+    "horaSalida": "06:00",
+    "horaLlegada": "16:00",
+    "fecha": "2022-12-01",
+    "empresa": "ChileBus",
+    "plataforma": "Plataforma 3",
+    "alaTerminal": "Sur",
+    "pasajesLibres": 30,
+    "horasViaje": 10,
+    "servicio": "interurbanos", "imageUrl":  'https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/images%2Fchilebus_0a75cfe8bb.jpg?alt=media&token=c8ae211b-f233-4e2f-9979-d151b7a7873a' 
+  },
+  {
+    "id": 16,
+    "origen": "Sevilla, España",
+    "destino": "Londres, Reino Unido",
+   "precio": 110000,
+    "horaSalida": "09:00",
+    "horaLlegada": "23:00",
+    "fecha": "2022-12-01",
+    "empresa": "Andesmar",
+    "plataforma": "Plataforma 4",
+    "alaTerminal": "Oeste",
+    "pasajesLibres": 35,
+    "horasViaje": 14,
+    "servicio": "interurbanos", "imageUrl":  'https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/images%2Fandesmar_373e914d64.jpg?alt=media&token=c3b96395-fa16-48cd-b2fd-309966307d2a' 
+  },
+  {
+    "id": 17,
+    "origen": "Bilbao, España",
+    "destino": "Berlín, Alemania",
+    "precio": 120000,
+    "horaSalida": "07:00",
+    "horaLlegada": "23:00",
+    "fecha": "2022-12-01",
+    "empresa": "Sendas",
+    "plataforma": "Plataforma 5",
+    "alaTerminal": "Este",
+    "pasajesLibres": 40,
+    "horasViaje": 16,
+    "servicio": "interurbanos", "imageUrl":  'https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/images%2Fsendas_72e27ef3bd.jpg?alt=media&token=5b8bcf7c-2107-432d-af59-714d11330f6b' 
+  },
+  {
+    "id": 18,
+    "origen": "Málaga, España",
+    "destino": "Ámsterdam, Países Bajos",
+    "precio": 13000,
+    "horaSalida": "10:00",
+    "horaLlegada": "08:00",
+    "fecha": "2022-12-02",
+    "empresa": "Andesmar",
+    "plataforma": "Plataforma 6",
+    "alaTerminal": "Sur",
+    "pasajesLibres": 50,
+    "horasViaje": 22,
+    "servicio": "interurbanos", "imageUrl":  'https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/images%2Fandesmar_373e914d64.jpg?alt=media&token=c3b96395-fa16-48cd-b2fd-309966307d2a' 
+  },
+  {
+    "id": 19,
+    "origen": "Granada, España",
+    "destino": "Bruselas, Bélgica",
+    "precio": 100000,
+    "horaSalida": "08:00",
+    "horaLlegada": "22:00",
+    "fecha": "2022-12-02",
+    "empresa": "Sendas",
+    "plataforma": "Plataforma 7",
+    "alaTerminal": "Oeste",
+    "pasajesLibres": 55,
+    "horasViaje": 14,
+    "servicio": "interurbanos", "imageUrl":  'https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/images%2Fsendas_72e27ef3bd.jpg?alt=media&token=5b8bcf7c-2107-432d-af59-714d11330f6b' 
+  },
+  {
+    "id": 20,
+    "origen": "Zaragoza, España",
+    "destino": "Viena, Austria",
+    "precio": 115000,
+    "horaSalida": "09:00",
+    "horaLlegada": "09:00",
+    "fecha": "2022-12-02",
+    "empresa": "Walcamau",
+    "plataforma": "Plataforma 8",
+    "alaTerminal": "Este",
+    "pasajesLibres": 60,
+    "horasViaje": 24,
+    "servicio": "interurbanos", "imageUrl":  'https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/images%2Fwalcamau_2c55ef4977.jpg?alt=media&token=4f987ca2-e08c-449d-84a2-d6fb078b6b37' 
+  },
+  {
+    "id": 21,
+    "origen": "Alicante, España",
+    "destino": "Praga, República Checa",
+    "precio": 125000,
+    "horaSalida": "07:00",
+    "horaLlegada": "21:00",
+    "fecha": "2022-12-02",
+    "empresa": "TurBus",
+    "plataforma": "Plataforma 9",
+    "alaTerminal": "Sur",
+    "pasajesLibres": 65,
+    "horasViaje": 14,
+    "servicio": "interurbanos", "imageUrl":  'https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/images%2Fturbus_0e07a55873.jpg?alt=media&token=2223f615-bdc5-49d4-a05d-d017384ea7ee' 
+  },
+  {
+    "id": 22,
+    "origen": "Córdoba, España",
+    "destino": "Varsovia, Polonia",
+    "precio": 130000,
+    "horaSalida": "08:00",
+    "horaLlegada": "22:00",
+    "fecha": "2022-12-02",
+    "empresa": "TurBus",
+    "plataforma": "Plataforma 10",
+    "alaTerminal": "Oeste",
+    "pasajesLibres": 70,
+    "horasViaje": 14,
+    "servicio": "interurbanos", "imageUrl":  'https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/images%2Fturbus_0e07a55873.jpg?alt=media&token=2223f615-bdc5-49d4-a05d-d017384ea7ee' 
+  },
+  {
+    "id": 23,
+    "origen": "Madrid, España",
+    "destino": "París, Francia",
+    "precio": 100000,
+    "horaSalida": "08:00",
+    "horaLlegada": "20:00",
+    "fecha": "2022-12-01",
+    "empresa": "ChileBus",
+    "plataforma": "Plataforma 1",
+    "alaTerminal": "Oeste",
+    "pasajesLibres": 50,
+    "horasViaje": 12,
+    "servicio": "interurbanos", "imageUrl":  'https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/images%2Fchilebus_0a75cfe8bb.jpg?alt=media&token=c8ae211b-f233-4e2f-9979-d151b7a7873a' 
+  },
+  {
+    "id": 24,
+    "origen": "Barcelona, España",
+    "destino": "Roma, Italia",
+    "precio": 90000,
+    "horaSalida": "10:00",
+    "horaLlegada": "22:00",
+    "fecha": "2022-12-01",
+    "empresa": "Walcamau",
+    "plataforma": "Plataforma 2",
+    "alaTerminal": "Este",
+    "pasajesLibres": 45,
+    "horasViaje": 12,
+    "servicio": "interurbanos", "imageUrl":  'https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/images%2Fwalcamau_2c55ef4977.jpg?alt=media&token=4f987ca2-e08c-449d-84a2-d6fb078b6b37' 
+  }
+];
+
+const dataMiddle = [
+  {
+    "id": 25,
+    "origen": "Mendoza",
+    "destino": "San Rafael",
+    "precio": 20000,
+    "horaSalida": "08:00",
+    "horaLlegada": "09:00",
+    "fecha": "2022-12-01",
+    "empresa": "Andesmar",
+    "plataforma": "Plataforma 1",
+    "alaTerminal": "Oeste",
+    "pasajesLibres": 30,
+    "horasViaje": 1,
+    "servicio": "interurbanos", "imageUrl":  'https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/images%2Fandesmar_373e914d64.jpg?alt=media&token=c3b96395-fa16-48cd-b2fd-309966307d2a' 
+  },
+  {
+    "id": 26,
+    "origen": "San Rafael",
+    "destino": "Mendoza",
+    "precio": 20000,
+    "horaSalida": "10:00",
+    "horaLlegada": "11:00",
+    "fecha": "2022-12-01",
+    "empresa": "Andesmar",
+    "plataforma": "Plataforma 2",
+    "alaTerminal": "Este",
+    "pasajesLibres": 25,
+    "horasViaje": 1,
+    "servicio": "interurbanos", "imageUrl":  'https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/images%2Fandesmar_373e914d64.jpg?alt=media&token=c3b96395-fa16-48cd-b2fd-309966307d2a' 
+  },
+  {
+    "id": 27,
+    "origen": "Mendoza",
+    "destino": "Malargüe",
+    "precio": 15000,
+    "horaSalida": "12:00",
+    "horaLlegada": "13:30",
+    "fecha": "2022-12-01",
+    "empresa": "Flecha Bus",
+    "plataforma": "Plataforma 3",
+    "alaTerminal": "Sur",
+    "pasajesLibres": 20,
+    "horasViaje": 1.5,
+    "servicio": "interurbanos", "imageUrl":  'https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/images%2Fflechabus_0244ed1d3c.jpg?alt=media&token=a8a969ee-17fa-483f-bdcf-c6e24853e0c0' 
+  },
+  {
+    "id": 28,
+    "origen": "Malargüe",
+    "destino": "Mendoza",
+    "precio": 15000,
+    "horaSalida": "14:00",
+    "horaLlegada": "15:30",
+    "fecha": "2022-12-01",
+    "empresa": "Flecha Bus",
+    "plataforma": "Plataforma 4",
+    "alaTerminal": "Oeste",
+    "pasajesLibres": 15,
+    "horasViaje": 1.5,
+    "servicio": "interurbanos", "imageUrl":  'https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/images%2Fflechabus_0244ed1d3c.jpg?alt=media&token=a8a969ee-17fa-483f-bdcf-c6e24853e0c0' 
+  },
+  {
+    "id": 29,
+    "origen": "Mendoza",
+    "destino": "General Alvear",
+    "precio": 20000,
+    "horaSalida": "16:00",
+    "horaLlegada": "17:30",
+    "fecha": "2022-12-01",
+    "empresa": "Worldline",
+    "plataforma": "Plataforma 5",
+    "alaTerminal": "Este",
+    "pasajesLibres": 10,
+    "horasViaje": 1.5,
+    "servicio": "interurbanos", "imageUrl":  'https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/images%2Fworldline_4949710b21.jpg?alt=media&token=f46419e4-45c9-4f12-be1f-8471c0334658' 
+  },
+  {
+    "id": 30,
+    "origen": "General Alvear",
+    "destino": "Mendoza",
+    "precio": 20000,
+    "horaSalida": "18:00",
+    "horaLlegada": "19:30",
+    "fecha": "2022-12-01",
+    "empresa": "Worldline",
+    "plataforma": "Plataforma 6",
+    "alaTerminal": "Sur",
+    "pasajesLibres": 5,
+    "horasViaje": 1.5,
+    "servicio": "interurbanos", "imageUrl":  'https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/images%2Fworldline_4949710b21.jpg?alt=media&token=f46419e4-45c9-4f12-be1f-8471c0334658' 
+  },
+  {
+    "id": 31,
+    "origen": "Mendoza",
+    "destino": "Tunuyán",
+    "precio": 25000,
+    "horaSalida": "20:00",
+    "horaLlegada": "22:30",
+    "fecha": "2022-12-01",
+    "empresa": "Iselin",
+    "plataforma": "Plataforma 7",
+    "alaTerminal": "Oeste",
+    "pasajesLibres": 0,
+    "horasViaje": 2.5,
+    "servicio": "interurbanos", "imageUrl":  'https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/images%2Fiselin.jpg?alt=media&token=aea39404-5073-43bb-9e0c-e975e75ca2b6' 
+  },
+  {
+    "id": 32,
+    "origen": "Tunuyán",
+    "destino": "Mendoza",
+    "precio": 25000,
+    "horaSalida": "08:00",
+    "horaLlegada": "10:30",
+    "fecha": "2022-12-02",
+    "empresa": "Iselin",
+    "plataforma": "Plataforma 8",
+    "alaTerminal": "Este",
+    "pasajesLibres": 30,
+    "horasViaje": 2.5,
+    "servicio": "interurbanos", "imageUrl":  'https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/images%2Fiselin.jpg?alt=media&token=aea39404-5073-43bb-9e0c-e975e75ca2b6' 
+  },
+  {
+    "id": 33,
+    "origen": "Mendoza",
+    "destino": "Tupungato",
+    "precio": 20000,
+    "horaSalida": "12:00",
+    "horaLlegada": "14:00",
+    "fecha": "2022-12-02",
+    "empresa": "Iselin",
+    "plataforma": "Plataforma 9",
+    "alaTerminal": "Sur",
+    "pasajesLibres": 25,
+    "horasViaje": 2,
+    "servicio": "interurbanos", "imageUrl":  'https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/images%2Fiselin.jpg?alt=media&token=aea39404-5073-43bb-9e0c-e975e75ca2b6' 
+  },
+  {
+    "id": 34,
+    "origen": "Tupungato",
+    "destino": "Mendoza",
+    "precio": 20000,
+    "horaSalida": "16:00",
+    "horaLlegada": "18:00",
+    "fecha": "2022-12-02",
+    "empresa": "Andesmar",
+    "plataforma": "Plataforma 10",
+    "alaTerminal": "Oeste",
+    "pasajesLibres": 20,
+    "horasViaje": 2,
+    "servicio": "interurbanos", "imageUrl":  'https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/images%2Fandesmar_373e914d64.jpg?alt=media&token=c3b96395-fa16-48cd-b2fd-309966307d2a' 
+  },
+  {
+    "id": 35,
+    "origen": "Mendoza",
+    "destino": "San Rafael",
+    "precio": 20000,
+    "horaSalida": "20:00",
+    "horaLlegada": "21:00",
+    "fecha": "2022-12-02",
+    "empresa": "Andesmar",
+    "plataforma": "Plataforma 11",
+    "alaTerminal": "Este",
+    "pasajesLibres": 15,
+    "horasViaje": 1,
+    "servicio": "interurbanos", "imageUrl":  'https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/images%2Fandesmar_373e914d64.jpg?alt=media&token=c3b96395-fa16-48cd-b2fd-309966307d2a' 
+  },
+  {
+    "id": 36,
+    "origen": "San Rafael",
+    "destino": "Mendoza",
+    "precio": 20000,
+    "horaSalida": "22:00",
+    "horaLlegada": "23:00",
+    "fecha": "2022-12-02",
+    "empresa": "Andesmar",
+    "plataforma": "Plataforma 12",
+    "alaTerminal": "Sur",
+    "pasajesLibres": 10,
+    "horasViaje": 1,
+    "servicio": "interurbanos", "imageUrl":  'https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/images%2Fandesmar_373e914d64.jpg?alt=media&token=c3b96395-fa16-48cd-b2fd-309966307d2a' 
+  },
+  {
+    "id": 37,
+    "origen": "Mendoza",
+    "destino": "Malargüe",
+    "precio": 15000,
+    "horaSalida": "08:00",
+    "horaLlegada": "09:30",
+    "fecha": "2022-12-03",
+    "empresa": "Flecha Bus",
+    "plataforma": "Plataforma 13",
+    "alaTerminal": "Oeste",
+    "pasajesLibres": 30,
+    "horasViaje": 1.5,
+    "servicio": "interurbanos", "imageUrl":  'https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/images%2Fflechabus_0244ed1d3c.jpg?alt=media&token=a8a969ee-17fa-483f-bdcf-c6e24853e0c0' 
+  },
+  {
+    "id": 38,
+    "origen": "Malargüe",
+    "destino": "Mendoza",
+    "precio": 15000,
+    "horaSalida": "10:00",
+    "horaLlegada": "11:30",
+    "fecha": "2022-12-03",
+    "empresa": "Flecha Bus",
+    "plataforma": "Plataforma 14",
+    "alaTerminal": "Este",
+    "pasajesLibres": 25,
+    "horasViaje": 1.5,
+    "servicio": "interurbanos", "imageUrl":  'https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/images%2Fflechabus_0244ed1d3c.jpg?alt=media&token=a8a969ee-17fa-483f-bdcf-c6e24853e0c0' 
+  },
+  {
+    "id": 39,
+    "origen": "Mendoza",
+    "destino": "General Alvear",
+    "precio": 20000,
+    "horaSalida": "12:00",
+    "horaLlegada": "13:30",
+    "fecha": "2022-12-03",
+    "empresa": "Worldline",
+    "plataforma": "Plataforma 15",
+    "alaTerminal": "Sur",
+    "pasajesLibres": 20,
+    "horasViaje": 1.5,
+    "servicio": "interurbanos", "imageUrl": 'https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/images%2Fworldline_4949710b21.jpg?alt=media&token=f46419e4-45c9-4f12-be1f-8471c0334658' 
+  }
+];
+
+dataInterUrbana.forEach(async (item) => {
+  try {
+    const docRef = doc(db, "dataInterUrbana", item.id.toString());
+    await setDoc(docRef, item);
+    console.log("Documento escrito con ID: ", item.id);
+  } catch (e) {
+    console.error("Error al agregar el documento: ", e);
+  }
+});
+
+dataLong.forEach(async (item) => {
+  try {
+    const docRef = doc(db, "dataLong", item.id.toString());
+    await setDoc(docRef, item);
+    console.log("Documento escrito con ID: ", item.id);
+  } catch (e) {
+    console.error("Error al agregar el documento: ", e);
+  }
+});
+
+dataMiddle.forEach(async (item) => {
+  try {
+    const docRef = doc(db, "dataMiddle", item.id.toString());
+    await setDoc(docRef, item);
+    console.log("Documento escrito con ID: ", item.id);
+  } catch (e) {
+    console.error("Error al agregar el documento: ", e);
+  }
+});
+

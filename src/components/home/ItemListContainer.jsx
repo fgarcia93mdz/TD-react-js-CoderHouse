@@ -1,16 +1,25 @@
 import React from 'react';
-import { Typography, Container, Box, Paper } from '@material-ui/core';
+import { Typography, Container, Box, Paper, Card, CardActionArea, CardContent, CardMedia, CircularProgress } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { HourglassEmpty } from '@material-ui/icons';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../../firebase.js';
 
 
 const useStyles = makeStyles({
+  container: {
+    display: "flex",
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-evenly",
+    alignItems: "center",
+  },
   root: {
-    minWidth: 275,
+    minWidth: 200,
+    maxHeight: 300,
     margin: '20px 0',
-    background: 'linear-gradient(to right, #9fa8da, #9fa8da, #c5cae9, #c5cae9, #c5cae9)',
     color: '#00000',
     boxShadow: '0 3px 5px 2px rgba(0, 0, 0, .3)',
+    width: '20vw',
   },
   title: {
     fontSize: 14,
@@ -41,10 +50,24 @@ const useStyles = makeStyles({
   },
 });
 
-const API_URL = process.env.NODE_ENV === 'development' ? '/api' : 'https://cors-anywhere.herokuapp.com/https://www.cultura.gob.ar';
-
 const ItemListContainer = ({ greeting }) => {
   const classes = useStyles();
+
+  const [data, setData] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      const dataCollection = collection(db, 'dataMuseosProgramas');
+      const dataSnapshot = await getDocs(dataCollection);
+      const dataList = dataSnapshot.docs.map(doc => doc.data());
+      setData(dataList);
+      setLoading(false);
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <Container maxWidth="xl">
       <Box marginTop={5}>
@@ -54,33 +77,52 @@ const ItemListContainer = ({ greeting }) => {
       </Box>
       <Box marginTop={10}>
         <Typography variant="h4" align="center" marginTop="20px" color="textSecondary" gutterBottom>
-          Museos De Argentina
+          Museos
         </Typography>
-      </Box>
-      <Box marginTop={10} display="flex" justifyContent="center">
-        <Paper elevation={3} className={classes.gradientPaper}>
-          <Typography variant="h5" align="center" gutterBottom>
-            <HourglassEmpty className={classes.rotatingIcon} /> Próximamente los museos de Argentina más visitados
-          </Typography>
-          <Typography variant="body1" align="center">
-            Estamos trabajando en nuevas características. ¡Manténgase al tanto!
-          </Typography>
-        </Paper>
       </Box>
       <Box marginTop={10}>
-        <Typography variant="h4" align="center" marginTop="20px" color="textSecondary" gutterBottom>
-          Programas Turísticos Nacionales
-        </Typography>
-      </Box>
-      <Box marginTop={10} display="flex" justifyContent="center">
-        <Paper elevation={3} className={classes.gradientPaper}>
-          <Typography variant="h5" align="center" gutterBottom>
-            <HourglassEmpty className={classes.rotatingIcon} /> Próximamente los programas turísticos nacionales más destacados
-          </Typography>
-          <Typography variant="body1" align="center">
-            Estamos trabajando en nuevas características. ¡Manténgase al tanto!
-          </Typography>
-        </Paper>
+        {loading ? (
+          <Box display="flex" justifyContent="center">
+            <CircularProgress />
+          </Box>
+        ) : (
+          <div className={classes.container}>
+            {data.filter(item => item.servicio === 'museos').map((museo, index) => (
+              <Card className={classes.root} key={index}>
+                <CardActionArea>
+                  <CardMedia
+                    className={classes.media}
+                    image={museo.imageUrl}
+                    title={museo.nombre}
+                  />
+                  <CardContent className={classes.gradientPaper}>
+                    <Typography gutterBottom variant="h5" component="h2" className={classes.title}>
+                      {museo.nombre}
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary" component="p" className={classes.pos}>
+                      {museo.ubicacion}
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary" component="p" className={classes.pos}>
+                      {museo.direccion}
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary" component="p" className={classes.pos}>
+                      Precio: {museo.precio === 0 ? 'Gratis' : `$${museo.precio}`}
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary" component="p" className={classes.pos}>
+                      Horario: {museo.horarioApertura} - {museo.horarioCierre}
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary" component="p" className={classes.pos}>
+                      Entradas libres: {museo.entradasLibres}
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary" component="p" className={classes.pos}>
+                      Duración de la visita: {museo.horasVisita} horas
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+            ))}
+          </div>
+        )}
       </Box>
     </Container>
   );

@@ -1,6 +1,6 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Dialog as MuiDialog, DialogTitle, DialogContent, DialogActions, Button, makeStyles, Typography } from '@material-ui/core';
+import { Dialog as MuiDialog, DialogTitle, DialogContent, DialogActions, Button, makeStyles, Typography, Grid } from '@material-ui/core';
 import { DialogContext } from './DialogContext';
 import ModeOfTravelIcon from '@mui/icons-material/ModeOfTravel';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -10,8 +10,7 @@ import CreditCardIcon from '@material-ui/icons/CreditCard';
 import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import AddIcon from '@material-ui/icons/Add';
-import RemoveIcon from '@material-ui/icons/Remove';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles({
   dialog: {
@@ -54,6 +53,8 @@ const useStyles = makeStyles({
     fontSize: '1.6em',
     fontWeight: 'bold',
     marginBottom: 20,
+    display: 'flex',
+    alignItems: 'center',
   },
   precio: {
     marginTop: 20,
@@ -64,7 +65,7 @@ const useStyles = makeStyles({
     borderRadius: 4,
     boxShadow: '0 0 10px rgba(0,100,0,0.5)',
     padding: 10,
-    width: '20%',
+    width: '30%',
   },
   pasajesLibres: {
     marginTop: 20,
@@ -106,28 +107,17 @@ const useStyles = makeStyles({
     position: 'relative',
     top: '5px',
   },
-  counterHeader: {
-    marginTop: 20,
-    fontSize: '1.2rem',
-    fontWeight: 'bold',
-    marginBottom: 20,
+  counter: {
+    justifyContent: 'center',
+    margin: '16px 0',
   },
-  counterContainer: {
-    display: 'flex',
-    justifyContent: 'left',
-    alignItems: 'center',
-    marginTop: 20,
+  count: {
+    margin: '0 16px',
   },
-  counterButton: {
-    color: '#3f51b5',
-    margin: '0 10px',
-  },
-  counterText: {
-    fontSize: '1rem',
-    color: '#3f51b5',
-    border: '1px solid #3f51b5',
-    borderRadius: 5,
-    padding: '5px 10px',
+  logoEmpresa: {
+    width: '50px',
+    height: '50px',
+    marginRight: '10px',
   },
 });
 function Dialog() {
@@ -135,11 +125,55 @@ function Dialog() {
   const navigate = useNavigate();
   const classes = useStyles();
   const { open, pasaje, handleClose } = useContext(DialogContext);
-  const [pasajesSeleccionados, setPasajesSeleccionados] = useState(1);
+  const [availableTickets, setAvailableTickets] = useState(pasaje ? pasaje.pasajesLibres : 0);
+
+  const { cart, setCart } = useContext(CartContext);
+  const [count, setCount] = useState(1);
+
+  useEffect(() => {
+    setAvailableTickets(pasaje ? pasaje.pasajesLibres : 0);
+    setCount(1);
+  }, [pasaje]);
 
   const handleBack = () => {
     handleClose();
     navigate(-1);
+  };
+
+  const handleIncrease = () => {
+    if (count < availableTickets) {
+      setCount(count + 1);
+      setAvailableTickets(availableTickets - 1);
+    }
+  };
+
+  const handleDecrease = () => {
+    if (count > 1) {
+      setCount(count - 1);
+      setAvailableTickets(availableTickets + 1);
+    }
+  };
+  const handleBuy = (item) => {
+    const currentCart = [...cart];
+    const cartItemIndex = currentCart.findIndex(i => i.id === item.id);
+
+    if (cartItemIndex !== -1) {
+      const newCartItem = { ...currentCart[cartItemIndex], quantity: currentCart[cartItemIndex].quantity + count };
+      currentCart[cartItemIndex] = newCartItem;
+    } else {
+      currentCart.push({ ...item, quantity: count });
+    }
+
+    setCart(currentCart);
+    toast.success(<Link to="/cart">
+      Compra realizada. Ver carrito
+    </Link>);
+    navigate('/');
+  };
+
+  const handleAddToCart = () => {
+    handleBuy(pasaje);
+    handleClose();
   };
 
 
@@ -160,6 +194,7 @@ function Dialog() {
                 Horario de Salida: {pasaje.horaSalida} - Horario de Llegada: {pasaje.horaLlegada} <span className={classes.spanRuta}> ({pasaje.horasViaje} hs de viaje)</span>
               </Typography>
               <Typography color="textSecondary" className={classes.empresa}>
+                <img src={pasaje.imageUrl} alt="Logo de la empresa" className={classes.logoEmpresa} />
                 Empresa {pasaje.empresa} - {pasaje.plataforma} - Ala {pasaje.alaTerminal}
               </Typography>
               <Typography color="textSecondary" className={classes.precio}>
@@ -178,26 +213,25 @@ function Dialog() {
                 </span>
               </Typography>
               <Typography color="textSecondary" className={classes.pasajesLibres}>
-                <AirlineSeatReclineExtraIcon className={classes.ArrowForwardIcon} /> {pasaje.pasajesLibres} pasajes disponibles
+                <AirlineSeatReclineExtraIcon className={classes.ArrowForwardIcon} /> {availableTickets} pasajes disponibles
               </Typography>
-              <div className={classes.counterContainer}>
-                <Typography color="textSecondary" className={classes.counterHeader}>
-                  Seleccione la cantidad de pasajes:
+              <Grid container alignItems="center" className={classes.counter}>
+                <Button variant="outlined" color="primary" onClick={handleDecrease}>
+                  -
+                </Button>
+                <Typography variant="h6" className={classes.count}>
+                  {count}
                 </Typography>
-                <Button className={classes.counterButton} onClick={() => setPasajesSeleccionados(pasajesSeleccionados > 1 ? pasajesSeleccionados - 1 : 1)}>
-                  <RemoveIcon />
+                <Button variant="outlined" color="primary" onClick={handleIncrease}>
+                  +
                 </Button>
-                <span className={classes.counterText}> {pasajesSeleccionados} </span>
-                <Button className={classes.counterButton} onClick={() => setPasajesSeleccionados(pasajesSeleccionados + 1)}>
-                  <AddIcon />
-                </Button>
-              </div>
+              </Grid>
             </DialogContent>
             <DialogActions>
-              <Button onClick={handleBack} color="primary">
+              <Button onClick={handleBack} color="secondary">
                 Cerrar
               </Button>
-              <Button color="primary" autoFocus>
+              <Button onClick={handleAddToCart} color="primary" autoFocus>
                 Comprar
               </Button>
             </DialogActions>
@@ -206,7 +240,6 @@ function Dialog() {
       </MuiDialog>
       <ToastContainer />
     </>
-
   );
 };
 
