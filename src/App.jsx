@@ -20,8 +20,6 @@ import Box from '@mui/material/Box';
 import { DialogProvider } from './components/dialog/DialogContext';
 import Dialog from './components/dialog/Dialog';
 
-import { CartProvider } from './components/card/CartContext';
-
 const getMonthName = () => {
   const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
     "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"

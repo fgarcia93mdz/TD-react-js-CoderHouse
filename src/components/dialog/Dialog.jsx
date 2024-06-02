@@ -8,7 +8,6 @@ import AirlineSeatReclineExtraIcon from '@mui/icons-material/AirlineSeatReclineE
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import CreditCardIcon from '@material-ui/icons/CreditCard';
 import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet';
-import { CartContext } from '../card/CartContext';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Link } from 'react-router-dom';
