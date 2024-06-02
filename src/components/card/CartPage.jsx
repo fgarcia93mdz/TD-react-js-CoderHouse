@@ -83,10 +83,17 @@ const useStyles = makeStyles({
     width: '50vw',
   },
   ruta: {
-    marginTop: 20,
-    fontSize: '1.8em',
+    marginTop: 10,
+    fontSize: '1rem',
     color: '#3f51b5',
-    marginBottom: 20,
+    marginBottom: 10,
+  },
+  horario: {
+    marginTop: 5,
+    fontSize: '1rem',
+    fontStyle: 'italic',
+    marginBottom: 5,
+    color: 'green',
   },
   spanRuta: {
     fontWeight: 'bold',
@@ -203,7 +210,13 @@ const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
             <Paper className={classes.paper}>
               <img src={item.imagen} alt={item.nombre} className={classes.image} />
               <Typography variant="h5" component="h2" className={classes.ruta}>
-                <ModeOfTravelIcon /> {item.origen} <span className={classes.spanRuta}>(origen)</span>  <ArrowForwardIcon className={classes.ArrowForwardIcon} /> {item.destino} <span className={classes.spanRuta}>(destino)</span>
+                <ModeOfTravelIcon /> {item.origen}  <ArrowForwardIcon className={classes.ArrowForwardIcon} /> {item.destino}
+              </Typography>
+              <Typography variant="body2" color="textSecondary" component="p" className={classes.horario}>
+                Fecha de Partida: {new Date(item.fecha).toLocaleDateString("es-ES")}
+              </Typography>
+              <Typography variant="body2" color="textSecondary" component="p" className={classes.horario}>
+                Horario de Salida: {item.horaSalida} - Horario de Llegada: {item.horaLlegada} <span className={classes.spanRuta}> ({item.horasViaje} hs de viaje)</span>
               </Typography>
               <Typography variant="body2" color="textSecondary" component="p" className={classes.price}>
                 $ {item.precio} (por pasaje)

@@ -78,12 +78,6 @@ function App() {
     );
   }, [month]);
 
-  const name = "Franco";
-  const lastName = "Garcia";
-  const companyName = "Terminal Digital";
-  const author = `Realizado por ${name} ${lastName}`;
-  const text = `¡Bienvenido al sistema de venta de pasajes de ${companyName}!`;
-
   const provincia = "Mendoza";
   const terminal = "Capital";
 
@@ -100,7 +94,7 @@ function App() {
                 <Route
                   exact
                   path="/"
-                  element={<ItemListContainer greeting="¡Conociendo un poco más de Argentina!" />}
+                  element={<ItemListContainer greeting="¡Conociendo un poco más mientras viajas!" />}
                 />
                 <Route
                   exact

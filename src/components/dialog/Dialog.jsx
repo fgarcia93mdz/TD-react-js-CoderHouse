@@ -16,7 +16,7 @@ import { Link } from 'react-router-dom';
 const useStyles = makeStyles({
   dialog: {
     width: '50%',
-    height: '85%',
+    height: '90%',
     margin: 'auto',
   },
   title: {
@@ -66,7 +66,7 @@ const useStyles = makeStyles({
     borderRadius: 4,
     boxShadow: '0 0 10px rgba(0,100,0,0.5)',
     padding: 10,
-    width: '20%',
+    width: '30%',
   },
   pasajesLibres: {
     marginTop: 20,
@@ -229,7 +229,7 @@ function Dialog() {
               </Grid>
             </DialogContent>
             <DialogActions>
-              <Button onClick={handleBack} color="primary">
+              <Button onClick={handleBack} color="secondary">
                 Cerrar
               </Button>
               <Button onClick={handleAddToCart} color="primary" autoFocus>
