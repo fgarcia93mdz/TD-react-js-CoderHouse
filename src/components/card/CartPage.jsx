@@ -245,17 +245,17 @@ const CartPage = () => {
             Por favor, rellena todos los campos para realizar la compra.
           </Typography>
           <Grid item>
-            <TextField required value={name} onChange={(e) => setName(e.target.value)} label="Nombre y Apellido" defaultValue={user?.displayName} />
+            <TextField fullWidth required value={name} onChange={(e) => setName(e.target.value)} label="Nombre y Apellido" defaultValue={user?.displayName} />
           </Grid>
           <Grid item>
-            <TextField required value={phone} onChange={(e) => setPhone(e.target.value)} label="Teléfono" />
+            <TextField fullWidth required value={phone} onChange={(e) => setPhone(e.target.value)} label="Teléfono" />
           </Grid>
           <Grid item>
-            <TextField required value={email} onChange={(e) => setEmail(e.target.value)} label="Correo electrónico" defaultValue={user?.email} />
+            <TextField fullWidth required value={email} onChange={(e) => setEmail(e.target.value)} label="Correo electrónico" defaultValue={user?.email} />
           </Grid>
           {!user?.email && (
             <Grid item>
-              <TextField required value={confirmEmail} onChange={(e) => setConfirmEmail(e.target.value)} label="Confirmar correo electrónico" />
+              <TextField fullWidth required value={confirmEmail} onChange={(e) => setConfirmEmail(e.target.value)} label="Confirmar correo electrónico" />
             </Grid>
           )}
           <Grid item>
