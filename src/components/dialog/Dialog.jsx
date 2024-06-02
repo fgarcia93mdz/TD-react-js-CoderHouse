@@ -1,6 +1,6 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Dialog as MuiDialog, DialogTitle, DialogContent, DialogActions, Button, makeStyles, Typography } from '@material-ui/core';
+import { Dialog as MuiDialog, DialogTitle, DialogContent, DialogActions, Button, makeStyles, Typography, Grid } from '@material-ui/core';
 import { DialogContext } from './DialogContext';
 import ModeOfTravelIcon from '@mui/icons-material/ModeOfTravel';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -54,6 +54,8 @@ const useStyles = makeStyles({
     fontSize: '1.6em',
     fontWeight: 'bold',
     marginBottom: 20,
+    display: 'flex',
+    alignItems: 'center',
   },
   precio: {
     marginTop: 20,
@@ -106,35 +108,67 @@ const useStyles = makeStyles({
     position: 'relative',
     top: '5px',
   },
+  counter: {
+    justifyContent: 'center',
+    margin: '16px 0',
+  },
+  count: {
+    margin: '0 16px',
+  },
+  logoEmpresa: {
+    width: '50px',
+    height: '50px',
+    marginRight: '10px',
+  },
 });
 function Dialog() {
 
   const navigate = useNavigate();
   const classes = useStyles();
   const { open, pasaje, handleClose } = useContext(DialogContext);
+  const [availableTickets, setAvailableTickets] = useState(pasaje ? pasaje.pasajesLibres : 0);
 
   const { cart, setCart } = useContext(CartContext);
+  const [count, setCount] = useState(1);
+
+  useEffect(() => {
+    setAvailableTickets(pasaje ? pasaje.pasajesLibres : 0);
+    setCount(1);
+  }, [pasaje]);
 
   const handleBack = () => {
     handleClose();
     navigate(-1);
   };
 
+  const handleIncrease = () => {
+    if (count < availableTickets) {
+      setCount(count + 1);
+      setAvailableTickets(availableTickets - 1);
+    }
+  };
+
+  const handleDecrease = () => {
+    if (count > 1) {
+      setCount(count - 1);
+      setAvailableTickets(availableTickets + 1);
+    }
+  };
   const handleBuy = (item) => {
     const currentCart = [...cart];
     const cartItemIndex = currentCart.findIndex(i => i.id === item.id);
 
     if (cartItemIndex !== -1) {
-      const newCartItem = { ...currentCart[cartItemIndex], quantity: currentCart[cartItemIndex].quantity + 1 };
+      const newCartItem = { ...currentCart[cartItemIndex], quantity: currentCart[cartItemIndex].quantity + count };
       currentCart[cartItemIndex] = newCartItem;
     } else {
-      currentCart.push({ ...item, quantity: 1 });
+      currentCart.push({ ...item, quantity: count });
     }
 
     setCart(currentCart);
     toast.success(<Link to="/cart">
-                    Compra realizada con éxito. Ver carrito
-                  </Link>);
+      Compra realizada. Ver carrito
+    </Link>);
     navigate('/');
   };
 
@@ -142,6 +176,7 @@ function Dialog() {
     handleBuy(pasaje);
     handleClose();
   };
+
 
   return (
     <>
@@ -160,6 +195,7 @@ function Dialog() {
                 Horario de Salida: {pasaje.horaSalida} - Horario de Llegada: {pasaje.horaLlegada} <span className={classes.spanRuta}> ({pasaje.horasViaje} hs de viaje)</span>
               </Typography>
               <Typography color="textSecondary" className={classes.empresa}>
+                <img src={pasaje.imageUrl} alt="Logo de la empresa" className={classes.logoEmpresa} />
                 Empresa {pasaje.empresa} - {pasaje.plataforma} - Ala {pasaje.alaTerminal}
               </Typography>
               <Typography color="textSecondary" className={classes.precio}>
@@ -178,8 +214,19 @@ function Dialog() {
                 </span>
               </Typography>
               <Typography color="textSecondary" className={classes.pasajesLibres}>
-                <AirlineSeatReclineExtraIcon className={classes.ArrowForwardIcon} /> {pasaje.pasajesLibres} pasajes disponibles
+                <AirlineSeatReclineExtraIcon className={classes.ArrowForwardIcon} /> {availableTickets} pasajes disponibles
               </Typography>
+              <Grid container alignItems="center" className={classes.counter}>
+                <Button variant="outlined" color="primary" onClick={handleDecrease}>
+                  -
+                </Button>
+                <Typography variant="h6" className={classes.count}>
+                  {count}
+                </Typography>
+                <Button variant="outlined" color="primary" onClick={handleIncrease}>
+                  +
+                </Button>
+              </Grid>
             </DialogContent>
             <DialogActions>
               <Button onClick={handleBack} color="primary">
@@ -194,7 +241,6 @@ function Dialog() {
       </MuiDialog>
       <ToastContainer />
     </>
-
   );
 };
 

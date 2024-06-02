@@ -15,11 +15,24 @@ import { onAuthStateChanged, signInWithPopup, GoogleAuthProvider } from 'firebas
 const useStyles = makeStyles({
   root: {
     display: 'flex',
-    flexDirection: 'row',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '48vh',
+    padding: '16px',
+    width: '100vw',
+    marginTop: '20vh',
+  },
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
     alignItems: 'left',
     justifyContent: 'center',
-    height: '30vh',
-    backgroundColor: '#f5f5f5',
+    padding: '50px',
+    width: '100vw',
+    backgroundColor: '#ffffff',
+    boxShadow: '0px 3px 5px -1px rgba(0,0,0,0.2), 0px 6px 10px 0px rgba(0,0,0,0.14), 0px 1px 18px 0px rgba(0,0,0,0.12)',
+    borderRadius: '4px',
   },
   paper: {
     padding: '16px',
@@ -55,7 +68,7 @@ const useStyles = makeStyles({
     textAlign: 'center',
   },
   button: {
-    marginTop: '8px',
+    marginTop: '20px',
     color: '#ffffff',
     backgroundColor: '#3f51b5',
     '&:hover': {
@@ -63,8 +76,11 @@ const useStyles = makeStyles({
     },
   },
   gridCompra: {
-    padding: '8px',
     backgroundColor: '#ffffff',
+    padding: '16px',
+    boxShadow: '0px 3px 5px -1px rgba(0,0,0,0.2), 0px 6px 10px 0px rgba(0,0,0,0.14), 0px 1px 18px 0px rgba(0,0,0,0.12)',
+    borderRadius: '4px',
+    width: '50vw',
   },
   ruta: {
     marginTop: 20,
@@ -97,8 +113,8 @@ const CartPage = () => {
 
   const [isMounted, setIsMounted] = useState(false);
 
-  const totalPrice = cart.reduce((total, item) => total + item.precio, 0);
-  const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+  const totalPrice = cart.reduce((total, item) => total + item.precio * item.quantity, 0);
+const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
 
   useEffect(() => {
     if (user) {
@@ -153,20 +169,15 @@ const CartPage = () => {
       });
   };
 
-  const handlePurchaseWithGoogle = async () => {
-    try {
-      await signInWithPopup(auth, provider);
-      handlePurchase();
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   if (cart.length === 0) {
     return (
       <Box className={classes.root}>
         <Box className={classes.messageBox}>
-          <Typography variant="h6">Tu carrito está vacío.</Typography>
+          <Typography variant="h3" color="secondary">
+            ¡Tu carrito está vacío!
+            <br />
+            Explora nuestra tienda y descubre productos increíbles.
+          </Typography>
           <Button
             className={classes.button}
             onClick={() => navigate('/category/interurbanos')}
@@ -179,8 +190,13 @@ const CartPage = () => {
   }
 
   return (
-    <div>
-      <p>Items en el carrito: {totalItems}</p>
+    <div className={classes.container}>
+      <Box mb={2}>
+
+      <Typography variant="h6">
+        Productos en el carrito: <span style={{ fontWeight: 'bold' }}>{totalItems}</span>
+      </Typography>
+      </Box>
       <Grid container spacing={3}>
         {cart.map((item) => (
           <Grid item xs={12} sm={6} md={4} lg={3} key={item.id}>
@@ -199,7 +215,11 @@ const CartPage = () => {
           </Grid>
         ))}
       </Grid>
-      <p>Total: {totalPrice}</p>
+      <Box mt={8} mb={6}>
+        <Typography variant="h6" color="primary">
+          Valor total de productos a comprar: <span style={{ fontWeight: 'bold' }}>$ </span> <span style={{ fontWeight: 'bold' }}>{totalPrice}</span>
+        </Typography>
+      </Box>
       <Grid className={classes.gridCompra} container direction="column" spacing={2}>
         <form noValidate >
           <Typography variant="h6" component="h2">
@@ -223,31 +243,31 @@ const CartPage = () => {
             </Grid>
           )}
           <Grid item>
-  {user?.email ? (
-    <>
-      <Button
-        onClick={handlePurchase}
-        disabled={!user || (!user?.email && email !== confirmEmail) || !name || !phone}
-      >
-        Realizar compra
-      </Button>
-    </>
-  ) : (
-    <>
-      <Button
-        onClick={handlePurchase}
-        disabled={!user || (!user?.email && email !== confirmEmail) || !name || !phone}
-      >
-        Realizar compra
-      </Button>
-      <Button
-        onClick={signInWithGoogle}
-      >
-        Iniciar sesión con Google
-      </Button>
-    </>
-  )}
-</Grid>
+            {user?.email ? (
+              <>
+                <Button
+                  onClick={handlePurchase}
+                  disabled={!user || (!user?.email && email !== confirmEmail) || !name || !phone}
+                >
+                  Realizar compra
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button
+                  onClick={handlePurchase}
+                  disabled={!user || (!user?.email && email !== confirmEmail) || !name || !phone}
+                >
+                  Realizar compra
+                </Button>
+                <Button
+                  onClick={signInWithGoogle}
+                >
+                  Iniciar sesión con Google
+                </Button>
+              </>
+            )}
+          </Grid>
         </form>
       </Grid>
     </div>
