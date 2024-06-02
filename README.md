@@ -23,6 +23,7 @@ Aquí puedes agregar las instrucciones para correr tu proyecto, por ejemplo:
 1. Clona el repositorio
 2. Instala las dependencias con `npm install`
 3. Corre el proyecto con `npm run dev`
+4. Despliega el build en GitHub Pages con `npm run deploy`
 
 ## A continuación, se presenta el cronograma de entregas para el proyecto final:
 
