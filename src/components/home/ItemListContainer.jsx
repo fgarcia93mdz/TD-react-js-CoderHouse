@@ -19,7 +19,13 @@ const useStyles = makeStyles({
     margin: '20px 0',
     color: '#00000',
     boxShadow: '0 3px 5px 2px rgba(0, 0, 0, .3)',
-    width: '20vw',
+    width: '100%', 
+    '@media (min-width:600px)': {
+      width: '50%', 
+    },
+    '@media (min-width:900px)': {
+      width: '20vw', 
+    },
   },
   title: {
     fontSize: 14,
