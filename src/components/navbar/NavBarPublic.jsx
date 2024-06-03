@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -13,9 +13,18 @@ import ListItemText from "@mui/material/ListItemText";
 import LogoItem from "./LogoItem";
 import CartWidget from "../card/CartWidget";
 import { Link } from 'react-router-dom';
+import Login from "../home/Login";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from '../../firebase.js';
 
 const NavBarPublic = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, setUser);
+    return () => unsubscribe();
+  }, []);
 
   const handleDrawerToggle = () => {
     setDrawerOpen(!drawerOpen);
@@ -47,7 +56,7 @@ const NavBarPublic = () => {
                 sx={{
                   display: "flex",
                   justifyContent: { xs: "center", sm: "flex-start" },
-                  width: {xs: "100%", sm: "10%"},
+                  width: { xs: "100%", sm: "10%" },
                 }}
               >
                 <Link to="/">
@@ -60,15 +69,25 @@ const NavBarPublic = () => {
                 onClose={handleDrawerToggle}
               >
                 <List>
-                  <ListItem button component={Link} to="/category/interurbanos" onClick={handleClose}>
-                    <ListItemText primary="PASAJES INTERURBANOS" sx={{ fontSize: { xs: "10px", sm: "20px" } }}/>
+                  <ListItem listItemButton component={Link} to="/category/interurbanos" onClick={handleClose}>
+                    <ListItemText primary="PASAJES INTERURBANOS" sx={{ fontSize: { xs: "10px", sm: "20px" } }} />
                   </ListItem>
-                  <ListItem button component={Link} to="/category/media-distancia" onClick={handleClose}>
-                    <ListItemText primary="PASAJES DE MEDIA DISTANCIA" sx={{ fontSize: { xs: "10px", sm: "20px" } }}/>
+                  <ListItem listItemButton component={Link} to="/category/media-distancia" onClick={handleClose}>
+                    <ListItemText primary="PASAJES DE MEDIA DISTANCIA" sx={{ fontSize: { xs: "10px", sm: "20px" } }} />
                   </ListItem>
-                  <ListItem button component={Link} to="/category/larga-distancia" onClick={handleClose}>
-                    <ListItemText primary="PASAJES DE LARGA DISTANCIA" sx={{ fontSize: { xs: "10px", sm: "20px" } }}/>
+                  <ListItem listItemButton component={Link} to="/category/larga-distancia" onClick={handleClose}>
+                    <ListItemText primary="PASAJES DE LARGA DISTANCIA" sx={{ fontSize: { xs: "10px", sm: "20px" } }} />
                   </ListItem>
+                  {!user && (
+                    <ListItem listItemButton component={Login} onClick={handleClose}>
+                      <ListItemText primary="INICIAR SESIÓN" sx={{ fontSize: { xs: "10px", sm: "20px" } }} />
+                    </ListItem>
+                  )}
+                  {user && (
+                    <ListItem listItemButton component={Link} to="/ordersUser" onClick={handleClose}>
+                      <ListItemText primary="MIS ORDENES" sx={{ fontSize: { xs: "10px", sm: "20px" } }} />
+                    </ListItem>
+                  )}
                 </List>
               </Drawer>
               <Box
@@ -76,12 +95,14 @@ const NavBarPublic = () => {
                   flexGrow: 1,
                   display: "flex",
                   justifyContent: "center",
+                  alignItems: "center",
                 }}
               >
                 <Box
                   sx={{
                     display: "flex",
                     justifyContent: "center",
+                    alignItems: "center",
                   }}
                 >
                   <Link to="/category/interurbanos">
@@ -123,6 +144,26 @@ const NavBarPublic = () => {
                       PASAJES DE LARGA DISTANCIA
                     </Button>
                   </Link>
+                  {user ? (
+                    <Link to="/ordersUser" onClick={handleClose}>
+                      <Button
+                        sx={{
+                          my: 2,
+                          color: "#0E315A",
+                          display: { xs: "none", sm: "block" },
+                          fontSize: "15px",
+                          marginRight: "50px",
+                          width: "100px",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        MIS ORDENES
+                      </Button>
+                    </Link>
+                  ) : (
+                    <Login />
+                  )}
                 </Box>
                 <Box style={{ marginTop: 27, marginLeft: 40 }}>
                   <Link to="/cart">

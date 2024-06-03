@@ -19,6 +19,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Box from '@mui/material/Box';
 import { DialogProvider } from './components/dialog/DialogContext';
 import Dialog from './components/dialog/Dialog';
+import OrdersUser from './components/order/OrdersUser.jsx';
 
 const useStyles = makeStyles({
   root: {
@@ -152,9 +153,15 @@ function App() {
                 </Route>
                 <Route
                   exact
-                  path="/order/:id" 
+                  path="/order/:id"
                   element={<OrderPage />} />
+                <Route
+                  exact
+                  path="/ordersUser"
+                  element={<OrdersUser />} />
+
               </Routes>
+
             </Box>
             <Footer Terminal={terminal} Provincia={provincia} />
           </React.Fragment>
