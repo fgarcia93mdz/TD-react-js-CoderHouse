@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { CartContext } from './CartContext';
 import { db, auth } from '../../firebase.js';
-import { Grid, TextField, Button, Typography, Box, Paper } from '@material-ui/core';
+import { Grid, TextField, Button, Typography, Box, Paper, IconButton } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useNavigate } from 'react-router-dom';
 import ModeOfTravelIcon from '@mui/icons-material/ModeOfTravel';
@@ -11,7 +11,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { UserContext } from '../user/UserContext.jsx';
 import { onAuthStateChanged, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
-
+import CloseIcon from '@material-ui/icons/Close';
 
 
 const useStyles = makeStyles({
@@ -37,6 +37,7 @@ const useStyles = makeStyles({
     borderRadius: '4px',
   },
   paper: {
+    position: 'relative',
     padding: { xs: '10px', sm: '16px' },
     textAlign: 'center',
     color: '#757575',
@@ -123,13 +124,29 @@ const useStyles = makeStyles({
       marginBottom: '20px',
     },
   },
+  clearCart: {
+    color: 'black',
+    boxShadow: '0 0 10px rgba(255,0,255,0.5)',
+    padding: '10px',
+    borderRadius: '4px',
+    alignContent: 'center',
+    width: '10vw',
+    '@media (max-width:600px)': {
+      fontSize: '0.5rem',
+      marginBottom: '20px',
+    },
+    '@media (min-width:600px)': {
+      fontSize: '0.8rem',
+      marginBottom: '20px',
+    },
+  },
 });
 
 const CartPage = () => {
   const classes = useStyles();
   const { user, setUser } = useContext(UserContext);
   const navigate = useNavigate();
-  const { cart, clearCart } = useContext(CartContext);
+  const { cart, clearCart, removeFromCart } = useContext(CartContext);
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
@@ -184,7 +201,6 @@ const CartPage = () => {
     return () => unsubscribe();
   }, [setUser]);
 
-
   const provider = new GoogleAuthProvider();
 
   const signInWithGoogle = () => {
@@ -216,6 +232,10 @@ const CartPage = () => {
     );
   }
 
+  const handleRemoveItem = (itemId) => {
+    removeFromCart(itemId);
+  };
+
   return (
     <div className={classes.container}>
       <Box mb={2}>
@@ -227,6 +247,12 @@ const CartPage = () => {
         {cart.map((item) => (
           <Grid item xs={12} sm={6} md={4} lg={3} key={item.id}>
             <Paper className={classes.paper}>
+              <IconButton
+                style={{ position: 'absolute', top: 0, right: 0, color: 'red' }}
+                onClick={() => handleRemoveItem(item.id)}
+              >
+                <CloseIcon />
+              </IconButton>
               <img src={item.imagen} alt={item.nombre} className={classes.image} />
               <Typography variant="h5" component="h2" className={classes.ruta}>
                 <ModeOfTravelIcon /> {item.origen}  <ArrowForwardIcon className={classes.ArrowForwardIcon} /> {item.destino}
@@ -251,6 +277,9 @@ const CartPage = () => {
         <Typography color="primary" style={{ fontSize: '1rem' }}>
           Valor total: <span style={{ fontWeight: 'bold' }}>$ </span> <span style={{ fontWeight: 'bold' }}>{totalPrice}</span>
         </Typography>
+        <Box mt={4}>
+          <Button onClick={clearCart} className={classes.clearCart}>Vaciar carrito</Button>
+        </Box>
       </Box>
       <Grid className={classes.gridCompra} container direction="column" spacing={2}>
         <form noValidate >
@@ -314,6 +343,7 @@ const CartPage = () => {
           </Grid>
         </form>
       </Grid>
+      <Button onClick={clearCart}>Vaciar carrito</Button>
     </div>
   );
 };
