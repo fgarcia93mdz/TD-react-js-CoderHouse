@@ -73,7 +73,7 @@ const useStyles = makeStyles({
     borderRadius: 4,
     boxShadow: '0 0 10px rgba(0,100,0,0.5)',
     padding: 10,
-    width: {xs:'40%', sm:'30%'},
+    width: { xs: '40%', sm: '30%' },
   },
   pasajesLibres: {
     marginTop: 20,
@@ -84,7 +84,7 @@ const useStyles = makeStyles({
     borderRadius: 4,
     boxShadow: '0 0 10px rgba(100,0,0,0.5)',
     padding: 10,
-    width: {xs: '60%', sm:'40%'},
+    width: { xs: '60%', sm: '40%' },
   },
   spanRuta: {
     fontWeight: 'bold',
@@ -138,13 +138,14 @@ function Dialog() {
   const navigate = useNavigate();
   const classes = useStyles();
   const { open, pasaje, handleClose } = useContext(DialogContext);
-  const [availableTickets, setAvailableTickets] = useState(pasaje ? pasaje.pasajesLibres : 0);
+  const [totalTickets, setTotalTickets] = useState(pasaje ? pasaje.pasajesLibres : 0);
+  const [count, setCount] = useState(1);
+  const availableTickets = totalTickets - count;
 
   const { cart, setCart } = useContext(CartContext);
-  const [count, setCount] = useState(1);
 
   useEffect(() => {
-    setAvailableTickets(pasaje ? pasaje.pasajesLibres : 0);
+    setTotalTickets(pasaje ? pasaje.pasajesLibres : 0);
     setCount(1);
   }, [pasaje]);
 
@@ -154,24 +155,23 @@ function Dialog() {
   };
 
   const handleIncrease = () => {
-    if (count < availableTickets) {
+    if (count < totalTickets) {
       setCount(count + 1);
-      setAvailableTickets(availableTickets - 1);
     }
   };
 
   const handleDecrease = () => {
-    if (count > 1) {
+    if (count > 0) {
       setCount(count - 1);
-      setAvailableTickets(availableTickets + 1);
     }
   };
+
   const handleBuy = (item) => {
     const currentCart = [...cart];
     const cartItemIndex = currentCart.findIndex(i => i.id === item.id);
 
     if (cartItemIndex !== -1) {
-      const newCartItem = { ...currentCart[cartItemIndex], quantity: currentCart[cartItemIndex].quantity + count };
+      const newCartItem = { ...currentCart[cartItemIndex], quantity: count };
       currentCart[cartItemIndex] = newCartItem;
     } else {
       currentCart.push({ ...item, quantity: count });
