@@ -48,6 +48,12 @@ const useStyles = makeStyles({
       transform: 'rotate(359deg)',
     },
   },
+  greeting: {
+    fontSize: '1rem',
+    '@media (min-width:600px)': {
+      fontSize: '3rem',
+    },
+  },
 });
 
 const ItemListContainer = ({ greeting }) => {
@@ -71,12 +77,12 @@ const ItemListContainer = ({ greeting }) => {
   return (
     <Container maxWidth="xl">
       <Box marginTop={5}>
-        <Typography variant="h3" align="center" color="textPrimary" gutterBottom>
+        <Typography variant="h3" align="center" color="textPrimary" gutterBottom className={classes.greeting}>
           {greeting}
         </Typography>
       </Box>
       <Box marginTop={10}>
-        <Typography variant="h4" align="center" marginTop="20px" color="textSecondary" gutterBottom>
+        <Typography variant="h4" align="center" marginTop="20px" color="textSecondary" gutterBottom className={classes.greeting}> 
           Museos
         </Typography>
       </Box>

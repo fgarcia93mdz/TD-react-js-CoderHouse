@@ -15,11 +15,39 @@ import { collection, getDocs } from 'firebase/firestore';
 import { UserProvider } from './components/user/UserProvider.jsx';
 import { CartProvider } from './components/card/CartContext.jsx';
 import OrderPage from './components/order/OrderPage.jsx';
-
+import { makeStyles } from '@material-ui/core/styles';
 import Box from '@mui/material/Box';
-
 import { DialogProvider } from './components/dialog/DialogContext';
 import Dialog from './components/dialog/Dialog';
+
+const useStyles = makeStyles({
+  root: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    '@media (max-width:600px)': {
+      fontSize: '0.8rem',
+    },
+  },
+  image: {
+    width: '50px',
+    height: '50px',
+    '@media (max-width:600px)': {
+      width: '30px',
+      height: '30px',
+    },
+  },
+  promotionSpan: {
+    '@media (max-width:600px)': {
+      fontSize: '0.8rem',
+    },
+  },
+  promotionText: {
+    '@media (max-width:600px)': {
+      fontSize: '0.7rem',
+    },
+  },
+});
 
 const getMonthName = () => {
   const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
@@ -30,6 +58,7 @@ const getMonthName = () => {
 }
 
 function App() {
+  const classes = useStyles();
   const [interurbanoData, setInterurbanoData] = useState([]);
   const [middleDistanceData, setMiddleDistanceData] = useState([]);
   const [longDistanceData, setLongDistanceData] = useState([]);
@@ -62,12 +91,12 @@ function App() {
     const card = 'Visa';
     const promotion = `Promociones de ${month}`;
     toast(
-      <div>
+      <div className={classes.root}>
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <img src={CardVisa} alt="Visa" style={{ width: '50px', height: '50px' }} />
-          <span className='promotionSpan'> {promotion} </span>
+          <img src={CardVisa} alt="Visa" className={classes.image} />
+          <span className={`promotionSpan ${classes.promotionSpan}`}> {promotion} </span>
         </div>
-        <p className='promotionText'>¡Bienvenido, te recordamos las promociones, ofertas y descuentos con tarjeta {card}</p>
+        <p className={`promotionText ${classes.promotionText}`}>¡Bienvenido, te recordamos las promociones, ofertas y descuentos con tarjeta {card}</p>
       </div>,
       {
         autoClose: 10000,

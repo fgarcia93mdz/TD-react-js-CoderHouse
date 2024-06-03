@@ -15,9 +15,16 @@ import { CartContext } from '../card/CartContext';
 
 const useStyles = makeStyles({
   dialog: {
-    width: '50%',
-    height: '90%',
-    margin: 'auto',
+    '@media (max-width:600px)': {
+      width: '100%',
+      height: '100%',
+      margin: 0,
+    },
+    '@media (min-width:600px)': {
+      width: '50%',
+      height: '90%',
+      margin: 'auto',
+    },
   },
   title: {
     backgroundColor: '#3f51b5',
@@ -66,7 +73,7 @@ const useStyles = makeStyles({
     borderRadius: 4,
     boxShadow: '0 0 10px rgba(0,100,0,0.5)',
     padding: 10,
-    width: '30%',
+    width: {xs:'40%', sm:'30%'},
   },
   pasajesLibres: {
     marginTop: 20,
@@ -77,7 +84,7 @@ const useStyles = makeStyles({
     borderRadius: 4,
     boxShadow: '0 0 10px rgba(100,0,0,0.5)',
     padding: 10,
-    width: '40%',
+    width: {xs: '60%', sm:'40%'},
   },
   spanRuta: {
     fontWeight: 'bold',
@@ -101,6 +108,11 @@ const useStyles = makeStyles({
     padding: 10,
     borderRadius: 4,
     boxShadow: '0 0 10px rgba(50,50,150,0.5)',
+    '@media (max-width:600px)': {
+      '& span': {
+        display: 'none',
+      },
+    },
   },
   icon: {
     marginLeft: 10,
@@ -203,15 +215,12 @@ function Dialog() {
               </Typography>
               <Typography color="textSecondary" className={classes.mediosPago}>
                 Medios de pago
-                <span>
-                  <AccountBalanceWalletIcon className={classes.icon} /> Efectivo
-                </span>
-                <span>
-                  <CreditCardIcon className={classes.icon} /> Tarjeta de crédito
-                </span>
-                <span>
-                  <CreditCardIcon className={classes.icon} /> Tarjeta de débito
-                </span>
+                <AccountBalanceWalletIcon className={classes.icon} />
+                <span>Efectivo</span>
+                <CreditCardIcon className={classes.icon} />
+                <span>Tarjeta de crédito</span>
+                <CreditCardIcon className={classes.icon} />
+                <span>Tarjeta de débito</span>
               </Typography>
               <Typography color="textSecondary" className={classes.pasajesLibres}>
                 <AirlineSeatReclineExtraIcon className={classes.ArrowForwardIcon} /> {availableTickets} pasajes disponibles

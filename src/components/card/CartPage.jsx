@@ -11,7 +11,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { UserContext } from '../user/UserContext.jsx';
 import { onAuthStateChanged, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
-import { doc, getDoc } from 'firebase/firestore';
+
 
 
 const useStyles = makeStyles({
@@ -31,13 +31,13 @@ const useStyles = makeStyles({
     alignItems: 'left',
     justifyContent: 'center',
     padding: '50px',
-    width: '100vw',
+    width: { xs: '50vw', sm: '100vw' },
     backgroundColor: '#ffffff',
     boxShadow: '0px 3px 5px -1px rgba(0,0,0,0.2), 0px 6px 10px 0px rgba(0,0,0,0.14), 0px 1px 18px 0px rgba(0,0,0,0.12)',
     borderRadius: '4px',
   },
   paper: {
-    padding: '16px',
+    padding: { xs: '10px', sm: '16px' },
     textAlign: 'center',
     color: '#757575',
     height: '100%',
@@ -82,7 +82,7 @@ const useStyles = makeStyles({
     padding: '16px',
     boxShadow: '0px 3px 5px -1px rgba(0,0,0,0.2), 0px 6px 10px 0px rgba(0,0,0,0.14), 0px 1px 18px 0px rgba(0,0,0,0.12)',
     borderRadius: '4px',
-    width: '50vw',
+    width: { xs: "70vw", sm: '50vw' },
   },
   ruta: {
     marginTop: 10,
@@ -106,6 +106,22 @@ const useStyles = makeStyles({
     position: 'relative',
     top: '5px',
     color: "black"
+  },
+  typography: {
+    color: 'black',
+    boxShadow: '0 0 10px rgba(255,0,0,0.5)',
+    padding: '10px',
+    borderRadius: '4px',
+    alignContent: 'center',
+    width: '24vw',
+    '@media (max-width:600px)': {
+      fontSize: '0.5rem',
+      marginBottom: '20px',
+    },
+    '@media (min-width:600px)': {
+      fontSize: '0.8rem',
+      marginBottom: '20px',
+    },
   },
 });
 
@@ -232,8 +248,8 @@ const CartPage = () => {
         ))}
       </Grid>
       <Box mt={8} mb={6}>
-        <Typography variant="h6" color="primary">
-          Valor total de productos a comprar: <span style={{ fontWeight: 'bold' }}>$ </span> <span style={{ fontWeight: 'bold' }}>{totalPrice}</span>
+        <Typography color="primary" style={{ fontSize: '1rem' }}>
+          Valor total: <span style={{ fontWeight: 'bold' }}>$ </span> <span style={{ fontWeight: 'bold' }}>{totalPrice}</span>
         </Typography>
       </Box>
       <Grid className={classes.gridCompra} container direction="column" spacing={2}>
@@ -241,29 +257,35 @@ const CartPage = () => {
           <Typography variant="h6" component="h2">
             Formulario de Compra
           </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
-            Por favor, rellena todos los campos para realizar la compra.
+          <Typography variant="body2" component="p" className={classes.typography}>
+            Por favor, rellena todos los campos para realizar la compra
           </Typography>
           <Grid item>
             <TextField fullWidth required value={name} onChange={(e) => setName(e.target.value)} label="Nombre y Apellido" defaultValue={user?.displayName} />
           </Grid>
-          <Grid item>
+          <Grid item style={{ marginTop: '1rem' }}>
             <TextField fullWidth required value={phone} onChange={(e) => setPhone(e.target.value)} label="Teléfono" />
           </Grid>
-          <Grid item>
+          <Grid item style={{ marginTop: '1rem' }}>
             <TextField fullWidth required value={email} onChange={(e) => setEmail(e.target.value)} label="Correo electrónico" defaultValue={user?.email} />
           </Grid>
           {!user?.email && (
-            <Grid item>
+            <Grid item style={{ marginTop: '1rem' }}>
               <TextField fullWidth required value={confirmEmail} onChange={(e) => setConfirmEmail(e.target.value)} label="Confirmar correo electrónico" />
             </Grid>
           )}
-          <Grid item>
+          <Grid item style={{ marginTop: '2rem' }}>
             {user?.email ? (
               <>
                 <Button
                   onClick={handlePurchase}
                   disabled={!user || (!user?.email && email !== confirmEmail) || !name || !phone}
+                  color={(!user || (!user?.email && email !== confirmEmail) || !name || !phone) ? "default" : "primary"}
+                  style={{
+                    boxShadow: (!user || (!user?.email && email !== confirmEmail) || !name || !phone) ? "none" : "0 0 10px rgba(0,0,0,0.5)",
+                    padding: '10px',
+                    borderRadius: '4px',
+                  }}
                 >
                   Realizar compra
                 </Button>
@@ -273,6 +295,12 @@ const CartPage = () => {
                 <Button
                   onClick={handlePurchase}
                   disabled={!user || (!user?.email && email !== confirmEmail) || !name || !phone}
+                  color={(!user || (!user?.email && email !== confirmEmail) || !name || !phone) ? "default" : "primary"}
+                  style={{
+                    boxShadow: (!user || (!user?.email && email !== confirmEmail) || !name || !phone) ? "none" : "0 0 10px rgba(0,0,0,0.5)",
+                    padding: '10px',
+                    borderRadius: '4px',
+                  }}
                 >
                   Realizar compra
                 </Button>

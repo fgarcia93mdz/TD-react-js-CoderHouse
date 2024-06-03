@@ -72,12 +72,12 @@ function ListPasajes({ data }) {
   const [search, setSearch] = useState('');
 
   const navigate = useNavigate();
-const { handleOpen } = useContext(DialogContext);
+  const { handleOpen } = useContext(DialogContext);
 
-const handleClick = (pasaje) => {
-  handleOpen(pasaje);
-  navigate(`/category/${pasaje.servicio}/pasaje/${pasaje.id}`);
-};
+  const handleClick = (pasaje) => {
+    handleOpen(pasaje);
+    navigate(`/category/${pasaje.servicio}/pasaje/${pasaje.id}`);
+  };
 
   const classes = useStyles();
 
@@ -99,25 +99,25 @@ const handleClick = (pasaje) => {
     <Container maxWidth="lg">
       <Grid container spacing={3}>
         <Grid item xs={12}>
-  <TextField 
-    name="search" 
-    label="Buscar" 
-    value={search} 
-    onChange={handleSearchChange} 
-    variant="outlined" 
-    fullWidth 
-    InputProps={{
-      startAdornment: (
-        <InputAdornment position="start">
-          <SearchIcon />
-        </InputAdornment>
-      ),
-    }}
-    style={{ margin: '20px 0' }}
-  />
-</Grid>
+          <TextField
+            name="search"
+            label="Buscar"
+            value={search}
+            onChange={handleSearchChange}
+            variant="outlined"
+            fullWidth
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon />
+                </InputAdornment>
+              ),
+            }}
+            style={{ margin: '20px 0' }}
+          />
+        </Grid>
         {filteredData.map((pasaje) => (
-          <Grid item xs={4} key={pasaje.id}>
+          <Grid item xs={12} sm={4} key={pasaje.id}>
             <Card className={classes.card}>
               <CardContent className={classes.cardContent}>
                 <div>
