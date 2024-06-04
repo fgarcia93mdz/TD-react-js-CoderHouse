@@ -343,7 +343,6 @@ const CartPage = () => {
           </Grid>
         </form>
       </Grid>
-      <Button onClick={clearCart}>Vaciar carrito</Button>
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Typography, Container, Box, Paper, Card, CardActionArea, CardContent, CardMedia, CircularProgress } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { collection, getDocs } from 'firebase/firestore';
@@ -12,6 +12,8 @@ const useStyles = makeStyles({
     flexWrap: "wrap",
     justifyContent: "space-evenly",
     alignItems: "center",
+    scrollSnapType: "x mandatory",
+    WebkitScrollSnapType: "x mandatory",
   },
   root: {
     minWidth: 200,
@@ -19,13 +21,15 @@ const useStyles = makeStyles({
     margin: '20px 0',
     color: '#00000',
     boxShadow: '0 3px 5px 2px rgba(0, 0, 0, .3)',
-    width: '100%', 
+    width: '100%',
     '@media (min-width:600px)': {
-      width: '50%', 
+      width: '50%',
     },
     '@media (min-width:900px)': {
-      width: '20vw', 
+      width: '20vw',
     },
+    scrollSnapAlign: "center",
+    WebkitScrollSnapAlign: "center",
   },
   title: {
     fontSize: 14,
@@ -60,6 +64,12 @@ const useStyles = makeStyles({
       fontSize: '3rem',
     },
   },
+  media: {
+    minHeight: '250px',
+    maxHeight: '250px',
+    height: 'auto',
+    width: '100%',
+  },
 });
 
 const ItemListContainer = ({ greeting }) => {
@@ -67,6 +77,7 @@ const ItemListContainer = ({ greeting }) => {
 
   const [data, setData] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
+  const [isHovered, setIsHovered] = useState({});
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -88,7 +99,7 @@ const ItemListContainer = ({ greeting }) => {
         </Typography>
       </Box>
       <Box marginTop={10}>
-        <Typography variant="h4" align="center" marginTop="20px" color="textSecondary" gutterBottom className={classes.greeting}> 
+        <Typography variant="h4" align="center" marginTop="20px" color="textSecondary" gutterBottom className={classes.greeting}>
           Museos
         </Typography>
       </Box>
@@ -100,36 +111,46 @@ const ItemListContainer = ({ greeting }) => {
         ) : (
           <div className={classes.container}>
             {data.filter(item => item.servicio === 'museos').map((museo, index) => (
-              <Card className={classes.root} key={index}>
+              <Card
+                className={classes.root}
+                key={index}
+                onMouseEnter={() => setIsHovered(prevState => ({ ...prevState, [index]: true }))}
+                onMouseLeave={() => setIsHovered(prevState => ({ ...prevState, [index]: false }))}
+                onTouchStart={() => setIsHovered(prevState => ({ ...prevState, [index]: true }))}
+                onTouchEnd={() => setIsHovered(prevState => ({ ...prevState, [index]: false }))}
+              >
                 <CardActionArea>
-                  <CardMedia
-                    className={classes.media}
-                    image={museo.imageUrl}
-                    title={museo.nombre}
-                  />
-                  <CardContent className={classes.gradientPaper}>
-                    <Typography gutterBottom variant="h5" component="h2" className={classes.title}>
-                      {museo.nombre}
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary" component="p" className={classes.pos}>
-                      {museo.ubicacion}
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary" component="p" className={classes.pos}>
-                      {museo.direccion}
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary" component="p" className={classes.pos}>
-                      Precio: {museo.precio === 0 ? 'Gratis' : `$${museo.precio}`}
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary" component="p" className={classes.pos}>
-                      Horario: {museo.horarioApertura} - {museo.horarioCierre}
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary" component="p" className={classes.pos}>
-                      Entradas libres: {museo.entradasLibres}
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary" component="p" className={classes.pos}>
-                      Duración de la visita: {museo.horasVisita} horas
-                    </Typography>
-                  </CardContent>
+                  {isHovered[index] ? (
+                    <CardContent className={classes.gradientPaper}>
+                      <Typography gutterBottom variant="h5" component="h2" className={classes.title}>
+                        {museo.nombre}
+                      </Typography>
+                      <Typography variant="body2" color="textSecondary" component="p" className={classes.pos}>
+                        {museo.ubicacion}
+                      </Typography>
+                      <Typography variant="body2" color="textSecondary" component="p" className={classes.pos}>
+                        {museo.direccion}
+                      </Typography>
+                      <Typography variant="body2" color="textSecondary" component="p" className={classes.pos}>
+                        Precio: {museo.precio === 0 ? 'Gratis' : `$${museo.precio}`}
+                      </Typography>
+                      <Typography variant="body2" color="textSecondary" component="p" className={classes.pos}>
+                        Horario: {museo.horarioApertura} - {museo.horarioCierre}
+                      </Typography>
+                      <Typography variant="body2" color="textSecondary" component="p" className={classes.pos}>
+                        Entradas libres: {museo.entradasLibres}
+                      </Typography>
+                      <Typography variant="body2" color="textSecondary" component="p" className={classes.pos}>
+                        Duración de la visita: {museo.horasVisita} horas
+                      </Typography>
+                    </CardContent>
+                  ) : (
+                    <CardMedia
+                      className={classes.media}
+                      image={museo.imageUrl}
+                      title={museo.nombre}
+                    />
+                  )}
                 </CardActionArea>
               </Card>
             ))}

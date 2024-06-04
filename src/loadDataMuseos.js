@@ -15,7 +15,7 @@ const dataMuseosProgramas = [
     "entradasLibres": 100,
     "horasVisita": 2,
     "servicio": "museos",
-    "imageUrl": "https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/images%2Fmuseo_bellas_artes.jpg?alt=media&token=a8a969ee-17fa-483f-bdcf-c6e24853e0c0"
+    "imageUrl": "https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/museos%2F52461-Museum-Of-Fine-Arts.jpg?alt=media&token=d9a63a32-2b77-4339-a7fc-78c4d213c946"
   },
   {
     "id": 2,
@@ -29,7 +29,7 @@ const dataMuseosProgramas = [
     "entradasLibres": 50,
     "horasVisita": 3,
     "servicio": "museos",
-    "imageUrl": "https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/images%2Fmuseo_prado.jpg?alt=media&token=12345678-1234-1234-1234-1234567890ab"
+    "imageUrl": "https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/museos%2Fimage.jpg?alt=media&token=a7d1b515-49d7-41cc-868a-088313254d63"
   },
   {
     "id": 3,
@@ -43,7 +43,7 @@ const dataMuseosProgramas = [
     "entradasLibres": 30,
     "horasVisita": 4,
     "servicio": "museos",
-    "imageUrl": "https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/images%2Fmuseo_louvre.jpg?alt=media&token=23456789-2345-2345-2345-2345678901bc"
+    "imageUrl": "https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/museos%2Fparis-louvre-piramides-noche.jpg?alt=media&token=5e437042-2b76-4756-9920-e024c43eb13d"
   },
   {
     "id": 4,
@@ -57,7 +57,7 @@ const dataMuseosProgramas = [
     "entradasLibres": 200,
     "horasVisita": 3,
     "servicio": "museos",
-    "imageUrl": "https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/images%2Fmuseo_moma.jpg?alt=media&token=34567890-3456-3456-3456-3456789012cd"
+    "imageUrl": "https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/museos%2Ff.elconfidencial.com_original_61e_105_9df_61e1059df8dcefb0603e3fccd20d3e10.jpg?alt=media&token=b86f3bbe-4bd3-4110-811c-9b15dc5bb0f9"
   },
   {
     "id": 5,
@@ -71,7 +71,7 @@ const dataMuseosProgramas = [
     "entradasLibres": 150,
     "horasVisita": 2,
     "servicio": "museos",
-    "imageUrl": "https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/images%2Fmuseo_historia_natural.jpg?alt=media&token=45678901-4567-4567-4567-4567890123de"
+    "imageUrl": "https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/museos%2Fimages.jpeg?alt=media&token=0ecf73a4-af1b-47de-8bea-e0c53a239662"
   },
   {
     "id": 6,
@@ -85,7 +85,7 @@ const dataMuseosProgramas = [
     "entradasLibres": 100,
     "horasVisita": 3,
     "servicio": "museos",
-    "imageUrl": "https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/images%2Fmuseo_antropologia.jpg?alt=media&token=56789012-5678-5678-5678-5678901234ef"
+    "imageUrl": "https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/museos%2Fmuseo-nacional-de-antropologc3ada-ciudad-de-mc3a9xico.jpg?alt=media&token=4250ce07-1d1b-4c3c-b18f-93f370f7db73"
   },
   {
     "id": 7,
@@ -99,7 +99,7 @@ const dataMuseosProgramas = [
     "entradasLibres": 80,
     "horasVisita": 4,
     "servicio": "museos",
-    "imageUrl": "https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/images%2Fmuseo_hermitage.jpg?alt=media&token=67890123-6789-6789-6789-6789012345fg"
+    "imageUrl": "https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/museos%2Fhermitage-1.a7c71a004d042875e55d03cd7a3b2cca126.jpg?alt=media&token=b87242c8-9f6c-467a-ac60-790d6d972807"
   },
   {
     "id": 8,
@@ -113,7 +113,7 @@ const dataMuseosProgramas = [
     "entradasLibres": 60,
     "horasVisita": 2,
     "servicio": "museos",
-    "imageUrl": "https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/images%2Fmuseo_uffizi.jpg?alt=media&token=78901234-7890-7890-7890-7890123456gh"
+    "imageUrl": "https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/museos%2FUffizi_Florencia-1300x731.webp?alt=media&token=a9b90ec8-20da-4cb5-a8f5-11d0d990f6ec"
   },
   {
     "id": 9,
@@ -127,7 +127,7 @@ const dataMuseosProgramas = [
     "entradasLibres": 70,
     "horasVisita": 3,
     "servicio": "museos",
-    "imageUrl": "https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/images%2Fmuseo_vaticano.jpg?alt=media&token=89012345-8901-8901-8901-8901234567hi"
+    "imageUrl": "https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/museos%2Fmuseos_vaticanos_roma.jpg?alt=media&token=b85ef199-59a8-45ea-b319-0d0f1e90fa2d"
   },
   {
     "id": 10,
@@ -141,146 +141,7 @@ const dataMuseosProgramas = [
     "entradasLibres": 120,
     "horasVisita": 2,
     "servicio": "museos",
-    "imageUrl": "https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/images%2Fmuseo_arte_islamico.jpg?alt=media&token=90123456-9012-9012-9012-9012345678ij"
-  },
-  {
-    "id": 11,
-    "nombre": "Museo Nacional del Prado",
-    "ubicacion": "Madrid",
-    "direccion": "Calle de Ruiz de Alarcón 23",
-    "precio": 15,
-    "horarioApertura": "10:00",
-    "horarioCierre": "20:00",
-    "fecha": "2022-12-11",
-    "entradasLibres": 200,
-    "horasVisita": 3,
-    "servicio": "museos",
-    "imageUrl": "https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/images%2Fmuseo_nacional_prado.jpg?alt=media&token=91234567-9123-9123-9123-9123456789jk"
-  },
-  {
-    "id": 12,
-    "nombre": "Museo Británico",
-    "ubicacion": "Londres",
-    "direccion": "Great Russell St",
-    "precio": 0,
-    "horarioApertura": "10:00",
-    "horarioCierre": "17:30",
-    "fecha": "2022-12-12",
-    "entradasLibres": 300,
-    "horasVisita": 4,
-    "servicio": "museos",
-    "imageUrl": "https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/images%2Fmuseo_britanico.jpg?alt=media&token=23456789-2345-2345-2345-2345678901lm"
-  },
-  {
-    "id": 13,
-    "nombre": "Museo Nacional de China",
-    "ubicacion": "Pekín",
-    "direccion": "16 East Chang'an Avenue",
-    "precio": 0,
-    "horarioApertura": "09:00",
-    "horarioCierre": "17:00",
-    "fecha": "2022-12-13",
-    "entradasLibres": 500,
-    "horasVisita": 3,
-    "servicio": "museos",
-    "imageUrl": "https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/images%2Fmuseo_nacional_china.jpg?alt=media&token=34567890-3456-3456-3456-3456789012mn"
-  },
-  {
-    "id": 14,
-    "nombre": "Museo Egipcio",
-    "ubicacion": "El Cairo",
-    "direccion": "Tahrir Square",
-    "precio": 10,
-    "horarioApertura": "09:00",
-    "horarioCierre": "19:00",
-    "fecha": "2022-12-14",
-    "entradasLibres": 150,
-    "horasVisita": 2,
-    "servicio": "museos",
-    "imageUrl": "https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/images%2Fmuseo_egipcio.jpg?alt=media&token=45678901-4567-4567-4567-4567890123op"
-  },
-  {
-    "id": 15,
-    "nombre": "Museo del Oro",
-    "ubicacion": "Bogotá",
-    "direccion": "Calle 16 #5-41",
-    "precio": 4,
-    "horarioApertura": "09:00",
-    "horarioCierre": "18:00",
-    "fecha": "2022-12-15",
-    "entradasLibres": 100,
-    "horasVisita": 2,
-    "servicio": "museos",
-    "imageUrl": "https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/images%2Fmuseo_oro.jpg?alt=media&token=56789012-5678-5678-5678-5678901234qr"
-  },
-  {
-    "id": 16,
-    "nombre": "Museo del Automóvil",
-    "ubicacion": "Turín",
-    "direccion": "Corso Unità d'Italia 40",
-    "precio": 12,
-    "horarioApertura": "10:00",
-    "horarioCierre": "19:00",
-    "fecha": "2022-12-16",
-    "entradasLibres": 80,
-    "horasVisita": 2,
-    "servicio": "museos",
-    "imageUrl": "https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/images%2Fmuseo_automovil.jpg?alt=media&token=67890123-6789-6789-6789-6789012345st"
-  }, {
-    "id": 17,
-    "nombre": "Museo de la Patagonia",
-    "ubicacion": "San Carlos de Bariloche, Río Negro",
-    "direccion": "Centro Cívico",
-    "precio": 100,
-    "horarioApertura": "10:00",
-    "horarioCierre": "20:00",
-    "fecha": "2024-06-18",
-    "entradasLibres": 70,
-    "horasVisita": 2.5,
-    "servicio": "museos",
-    "imageUrl": "https://example.com/museo_patagonia.jpg"
-  },
-  {
-    "id": 18,
-    "nombre": "Museo de Ciencias Naturales",
-    "ubicacion": "La Plata, Buenos Aires",
-    "direccion": "Paseo del Bosque s/n",
-    "precio": 50,
-    "horarioApertura": "10:00",
-    "horarioCierre": "18:00",
-    "fecha": "2024-06-19",
-    "entradasLibres": 200,
-    "horasVisita": 3,
-    "servicio": "museos",
-    "imageUrl": "https://example.com/museo_ciencias_naturales.jpg"
-  },
-  {
-    "id": 19,
-    "nombre": "Museo de Arte Contemporáneo de Salta",
-    "ubicacion": "Salta",
-    "direccion": "Zuviría 90",
-    "precio": 30,
-    "horarioApertura": "09:00",
-    "horarioCierre": "21:00",
-    "fecha": "2024-06-20",
-    "entradasLibres": 50,
-    "horasVisita": 1.5,
-    "servicio": "museos",
-    "imageUrl": "https://example.com/museo_arte_contemporaneo_salta.jpg"
-  },
-  {
-    "id": 20,
-    "nombre": "Museo del Fin del Mundo",
-    "ubicacion": "Ushuaia, Tierra del Fuego",
-    "direccion": "Maipú 173",
-    "precio": 200,
-    "horarioApertura": "09:00",
-    "horarioCierre": "20:00",
-    "fecha": "2024-06-21",
-    "entradasLibres": 100,
-    "horasVisita": 2,
-    "servicio": "museos",
-    "imageUrl": "https://example.com/museo_fin_del_mundo.jpg"
+    "imageUrl": "https://firebasestorage.googleapis.com/v0/b/api-testin-fgg.appspot.com/o/museos%2FDoha-Museum-of-Islamic-Art-Frontal-Reflection.jpg?alt=media&token=aeb89218-a3f2-4954-aa32-011ba6fbb3ca"
   }
 ];
 
