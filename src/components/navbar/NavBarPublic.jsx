@@ -78,11 +78,6 @@ const NavBarPublic = () => {
                   <ListItem listItemButton component={Link} to="/category/larga-distancia" onClick={handleClose}>
                     <ListItemText primary="PASAJES DE LARGA DISTANCIA" sx={{ fontSize: { xs: "10px", sm: "20px" } }} />
                   </ListItem>
-                  {!user && (
-                    <ListItem listItemButton component={Login} onClick={handleClose}>
-                      <ListItemText primary="INICIAR SESIÓN" sx={{ fontSize: { xs: "10px", sm: "20px" } }} />
-                    </ListItem>
-                  )}
                   {user && (
                     <ListItem listItemButton component={Link} to="/ordersUser" onClick={handleClose}>
                       <ListItemText primary="MIS ORDENES" sx={{ fontSize: { xs: "10px", sm: "20px" } }} />
@@ -135,7 +130,6 @@ const NavBarPublic = () => {
                     <Button
                       sx={{
                         my: 2,
-                        color: "#0E315A",
                         display: { xs: "none", sm: "block" },
                         fontSize: "20px",
                         marginRight: "50px",

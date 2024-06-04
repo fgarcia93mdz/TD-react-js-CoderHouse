@@ -25,7 +25,7 @@ const Login = () => {
 
   return (
     <button onClick={signInWithGoogle} style={{
-      color: "black",
+      color: "white",
       border: "none",
       borderRadius: "5px",
       padding: "10px 20px",
