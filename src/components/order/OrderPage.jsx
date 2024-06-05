@@ -56,7 +56,6 @@ const OrderPage = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Nº de Orden</TableCell>
                 <TableCell>Destino</TableCell>
                 <TableCell>Origen</TableCell>
                 <TableCell>Precio</TableCell>
@@ -72,7 +71,6 @@ const OrderPage = () => {
             <TableBody>
               {order ? order.items.map((item) => (
                 <TableRow key={item.id}>
-                  <TableCell>{item.id}</TableCell>
                   <TableCell>{item.destino}</TableCell>
                   <TableCell>{item.origen}</TableCell>
                   <TableCell>${item.precio}</TableCell>

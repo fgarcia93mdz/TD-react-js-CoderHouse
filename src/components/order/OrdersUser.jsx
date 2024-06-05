@@ -76,7 +76,6 @@ const OrdersUser = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Nº de Orden</TableCell>
                 <TableCell>Destino</TableCell>
                 <TableCell>Origen</TableCell>
                 <TableCell>Precio</TableCell>
@@ -94,7 +93,6 @@ const OrdersUser = () => {
               {userOrders.map((order, index) => (
                 order.items.map((item, itemIndex) => (
                   <TableRow key={`${index}-${itemIndex}`}>
-                    <TableCell>{item.id}</TableCell>
                     <TableCell>{item.destino}</TableCell>
                     <TableCell>{item.origen}</TableCell>
                     <TableCell>${item.precio}</TableCell>
