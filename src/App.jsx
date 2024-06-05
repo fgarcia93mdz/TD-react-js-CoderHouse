@@ -20,6 +20,7 @@ import Box from '@mui/material/Box';
 import { DialogProvider } from './components/dialog/DialogContext';
 import Dialog from './components/dialog/Dialog';
 import OrdersUser from './components/order/OrdersUser.jsx';
+import Error404 from './components/404/Error404.jsx';
 
 const useStyles = makeStyles({
   root: {
@@ -159,7 +160,7 @@ function App() {
                   exact
                   path="/ordersUser"
                   element={<OrdersUser />} />
-
+                <Route path="*" element={<Error404 />} />
               </Routes>
 
             </Box>
