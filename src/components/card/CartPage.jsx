@@ -12,6 +12,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import { UserContext } from '../user/UserContext.jsx';
 import { onAuthStateChanged, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import CloseIcon from '@material-ui/icons/Close';
+import GoogleIcon from '@mui/icons-material/Google';
+
 
 
 const useStyles = makeStyles({
@@ -118,6 +120,7 @@ const useStyles = makeStyles({
     '@media (max-width:600px)': {
       fontSize: '0.5rem',
       marginBottom: '20px',
+      width: '60vw',
     },
     '@media (min-width:600px)': {
       fontSize: '0.8rem',
@@ -134,6 +137,7 @@ const useStyles = makeStyles({
     '@media (max-width:600px)': {
       fontSize: '0.5rem',
       marginBottom: '20px',
+      width: '40vw',
     },
     '@media (min-width:600px)': {
       fontSize: '0.8rem',
@@ -318,15 +322,21 @@ const CartPage = () => {
                 >
                   Realizar compra
                 </Button>
+
               </>
             ) : (
-              <>
+                <Box style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+              }}>
                 <Button
                   onClick={handlePurchase}
-                  disabled={!user || (!user?.email && email !== confirmEmail) || !name || !phone}
-                  color={(!user || (!user?.email && email !== confirmEmail) || !name || !phone) ? "default" : "primary"}
+                  disabled={email !== confirmEmail || !name || !phone}
+                  color={(email !== confirmEmail) || !name || !phone ? "default" : "primary"}
                   style={{
-                    boxShadow: (!user || (!user?.email && email !== confirmEmail) || !name || !phone) ? "none" : "0 0 10px rgba(0,0,0,0.5)",
+                    boxShadow: (email !== confirmEmail) || !name || !phone ? "none" : "0 0 10px rgba(0,0,0,0.5)",
                     padding: '10px',
                     borderRadius: '4px',
                   }}
@@ -335,10 +345,20 @@ const CartPage = () => {
                 </Button>
                 <Button
                   onClick={signInWithGoogle}
-                >
-                  Iniciar sesión con Google
+                  style={{
+                    background: "linear-gradient(to right, #0E315A, #0E315B)",
+                    color: "white",
+                    border: "none",
+                    borderRadius: "5px",
+                    cursor: "pointer",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    marginLeft: '50px',
+                  }}>
+                  Iniciar sesión <span style={{ marginLeft: "10px" }}><GoogleIcon /></span>
                 </Button>
-              </>
+              </Box>
             )}
           </Grid>
         </form>

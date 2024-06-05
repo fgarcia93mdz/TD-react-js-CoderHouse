@@ -24,7 +24,8 @@ const Login = () => {
   }
 
   return (
-    <button onClick={signInWithGoogle} style={{
+   <button onClick={signInWithGoogle} style={{
+      background: "linear-gradient(to right, #0E315A, #0E315B)",
       color: "white",
       border: "none",
       borderRadius: "5px",

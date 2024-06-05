@@ -130,6 +130,7 @@ const NavBarPublic = () => {
                     <Button
                       sx={{
                         my: 2,
+                        color: "#0E315A",
                         display: { xs: "none", sm: "block" },
                         fontSize: "20px",
                         marginRight: "50px",
