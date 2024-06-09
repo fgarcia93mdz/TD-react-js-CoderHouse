@@ -1,11 +1,11 @@
-import React, { useContext, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { useContext, useState, useEffect } from 'react';
 import { DialogContext } from '../dialog/DialogContext';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import SearchIcon from '@material-ui/icons/Search';
 import { Card, CardContent, Typography, Button, Grid, Container, TextField } from '@material-ui/core';
 import { useNavigate } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
+import Loading from '../loading/Loading';
 
 const useStyles = makeStyles({
   card: {
@@ -70,9 +70,18 @@ const useStyles = makeStyles({
 function ListPasajes({ data }) {
 
   const [search, setSearch] = useState('');
+  const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
   const { handleOpen } = useContext(DialogContext);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleClick = (pasaje) => {
     handleOpen(pasaje);
@@ -94,6 +103,10 @@ function ListPasajes({ data }) {
       pasaje.origen?.toLowerCase().includes(search.toLowerCase())
     );
   });
+
+  if (loading) {
+    return <Loading message='Cargando información' />;
+  }
 
   return (
     <Container maxWidth="lg">

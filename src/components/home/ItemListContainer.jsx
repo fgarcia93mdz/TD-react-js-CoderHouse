@@ -3,7 +3,7 @@ import { Typography, Container, Box, Paper, Card, CardActionArea, CardContent, C
 import { makeStyles } from '@material-ui/core/styles';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../firebase.js';
-
+import Loading from '../loading/Loading.jsx';
 
 const useStyles = makeStyles({
   container: {
@@ -85,7 +85,7 @@ const ItemListContainer = ({ greeting }) => {
       const dataSnapshot = await getDocs(dataCollection);
       const dataList = dataSnapshot.docs.map(doc => doc.data());
       setData(dataList);
-      setLoading(false);
+      setTimeout(() => setLoading(false), 3000);
     };
 
     fetchData();
@@ -105,9 +105,7 @@ const ItemListContainer = ({ greeting }) => {
       </Box>
       <Box marginTop={10}>
         {loading ? (
-          <Box display="flex" justifyContent="center">
-            <CircularProgress />
-          </Box>
+          <Loading message='Cargando información'/>
         ) : (
           <div className={classes.container}>
             {data.filter(item => item.servicio === 'museos').map((museo, index) => (

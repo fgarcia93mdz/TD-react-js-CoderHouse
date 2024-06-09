@@ -142,7 +142,7 @@ function Dialog() {
   const [count, setCount] = useState(1);
   const availableTickets = totalTickets - count;
 
-  const { cart, setCart } = useContext(CartContext);
+  const { cart, addToCart } = useContext(CartContext);
 
   useEffect(() => {
     setTotalTickets(pasaje ? pasaje.pasajesLibres : 0);
@@ -155,34 +155,24 @@ function Dialog() {
   };
 
   const handleIncrease = () => {
-    if (count < totalTickets) {
-      setCount(count + 1);
-    }
-  };
+  if (count < totalTickets && count > 0) {
+    setCount(count + 1);
+  }
+};
 
-  const handleDecrease = () => {
-    if (count > 0) {
-      setCount(count - 1);
-    }
-  };
+const handleDecrease = () => {
+  if (count > 1) {
+    setCount(count - 1);
+  }
+};
 
-  const handleBuy = (item) => {
-    const currentCart = [...cart];
-    const cartItemIndex = currentCart.findIndex(i => i.id === item.id);
-
-    if (cartItemIndex !== -1) {
-      const newCartItem = { ...currentCart[cartItemIndex], quantity: count };
-      currentCart[cartItemIndex] = newCartItem;
-    } else {
-      currentCart.push({ ...item, quantity: count });
-    }
-
-    setCart(currentCart);
-    toast.success(<Link to="/cart">
-      Compra realizada. Ver carrito
-    </Link>);
-    navigate('/');
-  };
+ const handleBuy = (item) => {
+  addToCart({ ...item, quantity: count });
+  toast.success(<Link to="/cart">
+    Compra realizada. Ver carrito
+  </Link>);
+  navigate('/');
+};
 
   const handleAddToCart = () => {
     handleBuy(pasaje);
@@ -242,7 +232,7 @@ function Dialog() {
                 Cerrar
               </Button>
               <Button onClick={handleAddToCart} color="primary" autoFocus>
-                Comprar
+                Agregar al carrito
               </Button>
             </DialogActions>
           </>

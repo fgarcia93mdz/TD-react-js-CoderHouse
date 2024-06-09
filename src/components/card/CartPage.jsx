@@ -144,6 +144,24 @@ const useStyles = makeStyles({
       marginBottom: '20px',
     },
   },
+  checkoutButton: {
+    color: 'black',
+    boxShadow: '0 0 10px rgba(50,50,255,1)', 
+    padding: '10px',
+    borderRadius: '4px',
+    alignContent: 'center',
+    width: '10vw',
+    '@media (max-width:600px)': {
+      fontSize: '0.5rem',
+      marginBottom: '20px',
+      width: '40vw',
+    },
+    '@media (min-width:600px)': {
+      fontSize: '0.8rem',
+      marginBottom: '20px',
+      width: '20vw',
+    },
+  },
 });
 
 const CartPage = () => {
@@ -160,6 +178,8 @@ const CartPage = () => {
 
   const totalPrice = cart.reduce((total, item) => total + item.precio * item.quantity, 0);
   const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+
+  const [showForm, setShowForm] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -240,13 +260,16 @@ const CartPage = () => {
     removeFromCart(itemId);
   };
 
+  const handleCheckout = () => {
+    setShowForm(true);
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+  };
+
   return (
     <div className={classes.container}>
-      <Box mb={2}>
-        <Typography variant="h6">
-          Productos en el carrito: <span style={{ fontWeight: 'bold' }}>{totalItems}</span>
-        </Typography>
-      </Box>
+     <Box mb={2} display="flex" justifyContent="flex-end" alignItems="center">
+  <Button onClick={clearCart} className={classes.clearCart}>Vaciar carrito</Button>
+</Box>
       <Grid container spacing={3}>
         {cart.map((item) => (
           <Grid item xs={12} sm={6} md={4} lg={3} key={item.id}>
@@ -281,88 +304,99 @@ const CartPage = () => {
         <Typography color="primary" style={{ fontSize: '1rem' }}>
           Valor total: <span style={{ fontWeight: 'bold' }}>$ </span> <span style={{ fontWeight: 'bold' }}>{totalPrice}</span>
         </Typography>
-        <Box mt={4}>
-          <Button onClick={clearCart} className={classes.clearCart}>Vaciar carrito</Button>
-        </Box>
+        <Typography color="primary" style={{ fontSize: '1rem' }}>
+          Cantidad total de pasajes: <span style={{ fontWeight: 'bold' }}>{totalItems}</span> <span> {totalItems > 1 && (
+            <Box mt={4}>
+              <Button
+                onClick={handleCheckout}
+                className={classes.checkoutButton}
+              >
+                Finalizar compra
+              </Button>
+            </Box>
+          )}</span>
+        </Typography>
       </Box>
-      <Grid className={classes.gridCompra} container direction="column" spacing={2}>
-        <form noValidate >
-          <Typography variant="h6" component="h2">
-            Formulario de Compra
-          </Typography>
-          <Typography variant="body2" component="p" className={classes.typography}>
-            Por favor, rellena todos los campos para realizar la compra
-          </Typography>
-          <Grid item>
-            <TextField fullWidth required value={name} onChange={(e) => setName(e.target.value)} label="Nombre y Apellido" defaultValue={user?.displayName} />
-          </Grid>
-          <Grid item style={{ marginTop: '1rem' }}>
-            <TextField fullWidth required value={phone} onChange={(e) => setPhone(e.target.value)} label="Teléfono" />
-          </Grid>
-          <Grid item style={{ marginTop: '1rem' }}>
-            <TextField fullWidth required value={email} onChange={(e) => setEmail(e.target.value)} label="Correo electrónico" defaultValue={user?.email} />
-          </Grid>
-          {!user?.email && (
-            <Grid item style={{ marginTop: '1rem' }}>
-              <TextField fullWidth required value={confirmEmail} onChange={(e) => setConfirmEmail(e.target.value)} label="Confirmar correo electrónico" />
+      {showForm && (
+        <Grid className={classes.gridCompra} container direction="column" spacing={2}>
+          <form noValidate >
+            <Typography variant="h6" component="h2">
+              Formulario de Compra
+            </Typography>
+            <Typography variant="body2" component="p" className={classes.typography}>
+              Por favor, rellena todos los campos para realizar la compra
+            </Typography>
+            <Grid item>
+              <TextField fullWidth required value={name} onChange={(e) => setName(e.target.value)} label="Nombre y Apellido" defaultValue={user?.displayName} />
             </Grid>
-          )}
-          <Grid item style={{ marginTop: '2rem' }}>
-            {user?.email ? (
-              <>
-                <Button
-                  onClick={handlePurchase}
-                  disabled={!user || (!user?.email && email !== confirmEmail) || !name || !phone}
-                  color={(!user || (!user?.email && email !== confirmEmail) || !name || !phone) ? "default" : "primary"}
-                  style={{
-                    boxShadow: (!user || (!user?.email && email !== confirmEmail) || !name || !phone) ? "none" : "0 0 10px rgba(0,0,0,0.5)",
-                    padding: '10px',
-                    borderRadius: '4px',
-                  }}
-                >
-                  Realizar compra
-                </Button>
+            <Grid item style={{ marginTop: '1rem' }}>
+              <TextField fullWidth required value={phone} onChange={(e) => setPhone(e.target.value)} label="Teléfono" />
+            </Grid>
+            <Grid item style={{ marginTop: '1rem' }}>
+              <TextField fullWidth required value={email} onChange={(e) => setEmail(e.target.value)} label="Correo electrónico" defaultValue={user?.email} />
+            </Grid>
+            {!user?.email && (
+              <Grid item style={{ marginTop: '1rem' }}>
+                <TextField fullWidth required value={confirmEmail} onChange={(e) => setConfirmEmail(e.target.value)} label="Confirmar correo electrónico" />
+              </Grid>
+            )}
+            <Grid item style={{ marginTop: '2rem' }}>
+              {user?.email ? (
+                <>
+                  <Button
+                    onClick={handlePurchase}
+                    disabled={!user || (!user?.email && email !== confirmEmail) || !name || !phone}
+                    color={(!user || (!user?.email && email !== confirmEmail) || !name || !phone) ? "default" : "primary"}
+                    style={{
+                      boxShadow: (!user || (!user?.email && email !== confirmEmail) || !name || !phone) ? "none" : "0 0 10px rgba(0,0,0,0.5)",
+                      padding: '10px',
+                      borderRadius: '4px',
+                    }}
+                  >
+                    Realizar compra
+                  </Button>
 
-              </>
-            ) : (
+                </>
+              ) : (
                 <Box style={{
                   display: 'flex',
                   flexDirection: 'row',
                   alignItems: 'center',
                   justifyContent: 'center',
-              }}>
-                <Button
-                  onClick={handlePurchase}
-                  disabled={email !== confirmEmail || !name || !phone}
-                  color={(email !== confirmEmail) || !name || !phone ? "default" : "primary"}
-                  style={{
-                    boxShadow: (email !== confirmEmail) || !name || !phone ? "none" : "0 0 10px rgba(0,0,0,0.5)",
-                    padding: '10px',
-                    borderRadius: '4px',
-                  }}
-                >
-                  Realizar compra
-                </Button>
-                <Button
-                  onClick={signInWithGoogle}
-                  style={{
-                    background: "linear-gradient(to right, #0E315A, #0E315B)",
-                    color: "white",
-                    border: "none",
-                    borderRadius: "5px",
-                    cursor: "pointer",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    marginLeft: '50px',
-                  }}>
-                  Iniciar sesión <span style={{ marginLeft: "10px" }}><GoogleIcon /></span>
-                </Button>
-              </Box>
-            )}
-          </Grid>
-        </form>
-      </Grid>
+                }}>
+                  <Button
+                    onClick={handlePurchase}
+                    disabled={email !== confirmEmail || !name || !phone}
+                    color={(email !== confirmEmail) || !name || !phone ? "default" : "primary"}
+                    style={{
+                      boxShadow: (email !== confirmEmail) || !name || !phone ? "none" : "0 0 10px rgba(0,0,0,0.5)",
+                      padding: '10px',
+                      borderRadius: '4px',
+                    }}
+                  >
+                    Realizar compra
+                  </Button>
+                  <Button
+                    onClick={signInWithGoogle}
+                    style={{
+                      background: "linear-gradient(to right, #0E315A, #0E315B)",
+                      color: "white",
+                      border: "none",
+                      borderRadius: "5px",
+                      cursor: "pointer",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      marginLeft: '50px',
+                    }}>
+                    Iniciar sesión <span style={{ marginLeft: "10px" }}><GoogleIcon /></span>
+                  </Button>
+                </Box>
+              )}
+            </Grid>
+          </form>
+        </Grid>
+      )}
     </div>
   );
 };
